@@ -1,2 +1,3 @@
-# gocleanarchitecture
-Example web application using clean architecture in Go.
+# Clean Architecture in Go
+
+A good example of clean architecture for a web application in Go.

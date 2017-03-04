@@ -1,0 +1,37 @@
+{{define "title"}}Register{{end}}
+{{define "head"}}{{end}}
+{{define "content"}}
+	<div>
+		<h1>{{template "title" .}}</h1>
+	</div>
+	
+	<form method="post">
+		<div>
+			<label for="first_name">First Name</label>
+			<div><input name="firstname" type="text" id="firstname" maxlength="48" placeholder="First Name" /></div>
+		</div>
+		
+		<div>
+			<label for="last_name">Last Name</label>
+			<div><input name="lastname" type="text" id="lastname" maxlength="48" placeholder="Last Name" /></div>
+		</div>
+		
+		<div>
+			<label for="email">Email</label>
+			<div><input name="email" type="email" id="email" maxlength="48" placeholder="Email" /></div>
+		</div>
+		
+		<div>
+			<label for="password">Password</label>
+			<div><input name="password" type="password" id="password" maxlength="48" placeholder="Password" /></div>
+		</div>
+		
+		<div>
+			<label for="password_verify">Verify Password</label>
+			<div><input name="password_verify" type="password" id="password_verify" maxlength="48" placeholder="Verify Password" /></div>
+		</div>
+		
+		<input type="submit" value="Create Account" />
+	</form>
+{{end}}
+{{define "foot"}}{{end}}
