@@ -22,3 +22,7 @@ func main() {
 	http.Handle("/", h)
 	http.ListenAndServe(":8080", nil)
 }
+
+func Cool() string {
+	return "cool"
+}
