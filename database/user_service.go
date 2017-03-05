@@ -21,7 +21,7 @@ type UserService struct {
 	client *Client
 }
 
-// Autheticate returns an error if the email and password don't match.
+// Authenticate returns an error if the email and password don't match.
 func (s *UserService) Authenticate(d *user.Item) error {
 	// Load the data.
 	err := s.client.Read()
