@@ -8,6 +8,7 @@ import (
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
+// Handler represents the services required for this controller.
 type Handler struct {
 	UserService user.Service
 	ViewService view.Service

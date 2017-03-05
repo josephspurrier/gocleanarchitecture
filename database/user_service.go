@@ -8,8 +8,11 @@ import (
 )
 
 var (
-	ErrNotFound         = errors.New("User not found.")
-	ErrAlreadyExist     = errors.New("User already exists.")
+	// ErrNotFound is when the user does not exist.
+	ErrNotFound = errors.New("User not found.")
+	// ErrAlreadyExist is when the user already exists.
+	ErrAlreadyExist = errors.New("User already exists.")
+	// ErrPasswordNotMatch is when the user's password does not match.
 	ErrPasswordNotMatch = errors.New("User password does not match.")
 )
 

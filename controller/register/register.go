@@ -8,6 +8,7 @@ import (
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
+// Handler represents the services required for this controller.
 type Handler struct {
 	UserService user.Service
 	ViewService view.Service
@@ -41,7 +42,7 @@ func (h *Handler) Store(w http.ResponseWriter, r *http.Request) {
 	u.Email = r.FormValue("email")
 	u.Password = r.FormValue("password")
 
-	// Add the user to the datbase.
+	// Add the user to the database.
 	err := h.UserService.CreateUser(u)
 	if err != nil {
 		fmt.Fprint(w, err)

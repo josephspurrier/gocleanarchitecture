@@ -9,6 +9,7 @@ import (
 	"github.com/josephspurrier/gocleanarchitecture/domain/user"
 )
 
+// Schema represents the database structure.
 type Schema struct {
 	Records []user.Item
 }
@@ -25,6 +26,7 @@ type Client struct {
 	userService UserService
 }
 
+// NewClient returns a new database client.
 func NewClient(path string) *Client {
 	c := &Client{
 		Path: path,
