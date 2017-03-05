@@ -46,5 +46,4 @@ func (h *Handler) Store(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprint(w, "<html>Login successful!</html>")
-	return
 }
