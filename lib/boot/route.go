@@ -3,8 +3,8 @@ package boot
 import (
 	"net/http"
 
-	"gocleanarchitecture/controller/login"
-	"gocleanarchitecture/controller/register"
+	"github.com/josephspurrier/gocleanarchitecture/controller/login"
+	"github.com/josephspurrier/gocleanarchitecture/controller/register"
 )
 
 // LoadRoutes returns a handler with all the routes.

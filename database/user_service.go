@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strings"
 
-	"gocleanarchitecture/domain/user"
+	"github.com/josephspurrier/gocleanarchitecture/domain/user"
 )
 
 var (

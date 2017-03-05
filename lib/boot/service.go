@@ -1,9 +1,9 @@
 package boot
 
 import (
-	"gocleanarchitecture/database"
-	"gocleanarchitecture/domain/user"
-	"gocleanarchitecture/lib/view"
+	"github.com/josephspurrier/gocleanarchitecture/database"
+	"github.com/josephspurrier/gocleanarchitecture/domain/user"
+	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
 // Service represents all the services that the application uses.

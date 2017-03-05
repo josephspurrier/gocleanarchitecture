@@ -6,7 +6,7 @@ import (
 	"os"
 	"sync"
 
-	"gocleanarchitecture/domain/user"
+	"github.com/josephspurrier/gocleanarchitecture/domain/user"
 )
 
 type Schema struct {

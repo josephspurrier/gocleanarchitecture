@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"gocleanarchitecture/domain/user"
-	"gocleanarchitecture/lib/view"
+	"github.com/josephspurrier/gocleanarchitecture/domain/user"
+	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
 type Handler struct {
