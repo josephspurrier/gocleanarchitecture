@@ -4,15 +4,13 @@ import (
 	"fmt"
 	"net/http"
 
-	"gocleanarchitecture/domain"
 	"gocleanarchitecture/domain/user"
 	"gocleanarchitecture/lib/view"
 )
 
 type Handler struct {
-	ContextService domain.ContextService
-	UserService    user.Service
-	ViewService    view.Service
+	UserService user.Service
+	ViewService view.Service
 }
 
 // Index displays the logon screen.
@@ -22,7 +20,7 @@ func (h *Handler) Index(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.ViewService.Template("register/index").Render(w, r)
+	h.ViewService.SetTemplate("register/index").Render(w, r)
 }
 
 // Store adds a user to the database.

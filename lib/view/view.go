@@ -6,53 +6,53 @@ import (
 	"path"
 )
 
-type Template struct {
+// Item represents a view template.
+type Item struct {
 	Extension string
 	Folder    string
 	Vars      map[string]interface{}
 
-	rootTemplate string
 	baseTemplate string
+	template     string
 }
 
+// Service represents a service for managing a template.
 type Service interface {
-	BaseTemplate(relativeFilePath string) *Template
 	Render(w http.ResponseWriter, r *http.Request) error
-	Template(relativeFilePath string) *Template
+	SetBaseTemplate(relativeFilePath string) *Item
+	SetTemplate(relativeFilePath string) *Item
 }
 
-func New() *Template {
-	t := new(Template)
+// New returns a new template.
+func New(folder string, extension string) *Item {
+	t := new(Item)
 
-	t.Folder = "../../view"
-	t.rootTemplate = path.Join(t.Folder, "default")
-	t.baseTemplate = path.Join(t.Folder, "base")
-	t.Extension = "tmpl"
+	// Set the initial values.
+	t.Folder = folder
+	t.Extension = extension
+	t.SetTemplate("default")
+	t.SetBaseTemplate("base")
 
 	return t
 }
 
-// BaseTemplate sets the base template to render.
-func (t *Template) BaseTemplate(s string) *Template {
+// SetBaseTemplate sets the base template to render.
+func (t *Item) SetBaseTemplate(s string) *Item {
 	t.baseTemplate = path.Join(t.Folder, s)
 	return t
 }
 
-// Template sets the template to render.
-func (t *Template) Template(s string) *Template {
-	t.rootTemplate = path.Join(t.Folder, s)
+// SetTemplate sets the template to render.
+func (t *Item) SetTemplate(s string) *Item {
+	t.template = path.Join(t.Folder, s)
 	return t
 }
 
 // Render outputs the template to the ResponseWriter.
-func (t *Template) Render(w http.ResponseWriter, r *http.Request) error {
-	key := t.rootTemplate + "." + t.Extension
-	base := t.baseTemplate + "." + t.Extension
-
+func (t *Item) Render(w http.ResponseWriter, r *http.Request) error {
 	// Determine if there is an error in the template syntax.
-	tc, err := template.ParseFiles(
-		base,
-		key)
+	tc, err := template.ParseFiles(t.baseTemplate+"."+t.Extension,
+		t.template+"."+t.Extension)
 	if err != nil {
 		http.Error(w, "Template Parse Error: "+err.Error(), http.StatusInternalServerError)
 		return err
