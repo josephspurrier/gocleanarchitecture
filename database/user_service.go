@@ -11,6 +11,7 @@ type UserService struct {
 	client Service
 }
 
+// NewUserService returns the service for managing users.
 func NewUserService(client Service) *UserService {
 	s := new(UserService)
 	s.client = client

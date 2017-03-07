@@ -14,7 +14,7 @@ type BadResponseWriter struct {
 	Failed bool
 }
 
-// Header returns an emtpy header.
+// Header returns an empty header.
 func (w *BadResponseWriter) Header() http.Header {
 	return make(http.Header)
 }
