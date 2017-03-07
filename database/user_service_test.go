@@ -1,22 +1,17 @@
-package user_test
+package database_test
 
 import (
 	"testing"
 
+	"github.com/josephspurrier/gocleanarchitecture/database"
 	"github.com/josephspurrier/gocleanarchitecture/domain/user"
 )
-
-// AssertEqual throws an error if the two values are not equal.
-func AssertEqual(t *testing.T, actualValue interface{}, expectedValue interface{}) {
-	if actualValue != expectedValue {
-		t.Errorf("\n got: %v\nwant: %v", actualValue, expectedValue)
-	}
-}
 
 // TestCreateUser ensures user can be created.
 func TestCreateUser(t *testing.T) {
 	// Test user creation.
-	s := new(user.MockService)
+	db := new(database.MockService)
+	s := database.NewUserService(db)
 	u := new(user.Item)
 	u.Email = "jdoe@example.com"
 	u.Password = "Pa$$w0rd"
@@ -40,7 +35,8 @@ func TestCreateUser(t *testing.T) {
 // TestAuthenticate ensures user can authenticate.
 func TestAuthenticate(t *testing.T) {
 	// Test user creation.
-	s := new(user.MockService)
+	db := new(database.MockService)
+	s := database.NewUserService(db)
 	u := new(user.Item)
 	u.Email = "ssmith@example.com"
 	u.Password = "Pa$$w0rd"

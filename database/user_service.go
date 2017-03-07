@@ -11,6 +11,12 @@ type UserService struct {
 	client Service
 }
 
+func NewUserService(client Service) *UserService {
+	s := new(UserService)
+	s.client = client
+	return s
+}
+
 // Authenticate returns an error if the email and password don't match.
 func (s *UserService) Authenticate(d *user.Item) error {
 	// Load the data.
