@@ -7,7 +7,6 @@ import (
 	"testing"
 
 	"github.com/josephspurrier/gocleanarchitecture/controller/login"
-	"github.com/josephspurrier/gocleanarchitecture/database"
 	"github.com/josephspurrier/gocleanarchitecture/domain/user"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
@@ -47,6 +46,7 @@ func TestStoreMissingRequiredFields(t *testing.T) {
 
 	// Call the handler.
 	h := new(login.Handler)
+	h.UserService = new(user.MockService)
 	h.ViewService = view.New("../../view", "tmpl")
 	h.Index(w, r)
 
@@ -71,8 +71,8 @@ func TestStoreAuthenticateOK(t *testing.T) {
 
 	// Call the handler.
 	h := new(login.Handler)
-	dbClient := database.NewClient("db.json")
-	h.UserService = dbClient.UserService()
+	h.UserService = new(user.MockService)
+	h.ViewService = view.New("../../view", "tmpl")
 
 	// Create a new user.
 	u := new(user.Item)
@@ -80,7 +80,6 @@ func TestStoreAuthenticateOK(t *testing.T) {
 	u.Password = "Pa$$w0rd"
 	h.UserService.CreateUser(u)
 
-	h.ViewService = view.New("../../view", "tmpl")
 	h.Index(w, r)
 
 	// Check the output.
@@ -104,8 +103,8 @@ func TestStoreAuthenticateFail(t *testing.T) {
 
 	// Call the handler.
 	h := new(login.Handler)
-	dbClient := database.NewClient("db.json")
-	h.UserService = dbClient.UserService()
+	h.UserService = new(user.MockService)
+	h.ViewService = view.New("../../view", "tmpl")
 
 	// Create a new user.
 	u := new(user.Item)
@@ -113,7 +112,6 @@ func TestStoreAuthenticateFail(t *testing.T) {
 	u.Password = "Pa$$w0rd"
 	h.UserService.CreateUser(u)
 
-	h.ViewService = view.New("../../view", "tmpl")
 	h.Index(w, r)
 
 	// Check the output.

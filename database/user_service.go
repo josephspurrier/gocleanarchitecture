@@ -1,19 +1,9 @@
 package database
 
 import (
-	"errors"
 	"strings"
 
 	"github.com/josephspurrier/gocleanarchitecture/domain/user"
-)
-
-var (
-	// ErrNotFound is when the user does not exist.
-	ErrNotFound = errors.New("User not found.")
-	// ErrAlreadyExist is when the user already exists.
-	ErrAlreadyExist = errors.New("User already exists.")
-	// ErrPasswordNotMatch is when the user's password does not match.
-	ErrPasswordNotMatch = errors.New("User password does not match.")
 )
 
 // UserService represents a service for managing users.
@@ -35,11 +25,11 @@ func (s *UserService) Authenticate(d *user.Item) error {
 			if v.Password == d.Password {
 				return nil
 			}
-			return ErrPasswordNotMatch
+			return user.ErrPasswordNotMatch
 		}
 	}
 
-	return ErrNotFound
+	return user.ErrNotFound
 }
 
 // User returns a user by email.
@@ -60,7 +50,7 @@ func (s *UserService) User(email string) (*user.Item, error) {
 		}
 	}
 
-	return item, ErrNotFound
+	return item, user.ErrNotFound
 }
 
 // CreateUser creates a new user.
@@ -74,7 +64,7 @@ func (s *UserService) CreateUser(d *user.Item) error {
 	for _, v := range s.client.data.Records {
 		if strings.ToLower(v.Email) == strings.ToLower(d.Email) {
 			// Return an error since the record exists.
-			return ErrAlreadyExist
+			return user.ErrAlreadyExist
 		}
 	}
 
