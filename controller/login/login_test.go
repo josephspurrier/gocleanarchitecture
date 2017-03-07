@@ -54,8 +54,8 @@ func TestStoreMissingRequiredFields(t *testing.T) {
 	AssertEqual(t, w.Code, http.StatusBadRequest)
 }
 
-// TestStoreOK ensures required fields should be entered.
-func TestStoreOk(t *testing.T) {
+// TestStoreAuthenticateOK ensures login can be successful.
+func TestStoreAuthenticateOK(t *testing.T) {
 	// Set up the request.
 	w := httptest.NewRecorder()
 	r, err := http.NewRequest("POST", "/", nil)
@@ -85,4 +85,37 @@ func TestStoreOk(t *testing.T) {
 
 	// Check the output.
 	AssertEqual(t, w.Code, http.StatusOK)
+}
+
+// TestStoreAuthenticateFail ensures login can fail.
+func TestStoreAuthenticateFail(t *testing.T) {
+	// Set up the request.
+	w := httptest.NewRecorder()
+	r, err := http.NewRequest("POST", "/", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Set the request body.
+	val := url.Values{}
+	r.Form = val
+	r.Form.Add("email", "jdoe2@example.com")
+	r.Form.Add("password", "Pa$$w0rd")
+
+	// Call the handler.
+	h := new(login.Handler)
+	dbClient := database.NewClient("db.json")
+	h.UserService = dbClient.UserService()
+
+	// Create a new user.
+	u := new(user.Item)
+	u.Email = "jdoe2@example.com"
+	u.Password = "BadPa$$w0rd"
+	h.UserService.CreateUser(u)
+
+	h.ViewService = view.New("../../view", "tmpl")
+	h.Index(w, r)
+
+	// Check the output.
+	AssertEqual(t, w.Code, http.StatusUnauthorized)
 }
