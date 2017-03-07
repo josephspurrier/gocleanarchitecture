@@ -30,8 +30,8 @@ func TestNewClient(t *testing.T) {
 	AssertNotNil(t, c.UserService())
 }
 
-// TestRead ensures the read works properly.
-func TestRead(t *testing.T) {
+// TestRead ensures the read and write works properly.
+func TestReadWrite(t *testing.T) {
 	c := database.NewClient("db.json")
 
 	// Check the output.
