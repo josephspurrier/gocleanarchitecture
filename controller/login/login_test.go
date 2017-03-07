@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/josephspurrier/gocleanarchitecture/controller/login"
+	"github.com/josephspurrier/gocleanarchitecture/database"
 	"github.com/josephspurrier/gocleanarchitecture/domain/user"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
@@ -47,7 +48,8 @@ func TestStoreMissingRequiredFields(t *testing.T) {
 
 	// Call the handler.
 	h := new(login.Handler)
-	h.UserService = new(user.MockService)
+	db := new(database.MockService)
+	h.UserService = database.NewUserService(db)
 	h.ViewService = view.New("../../view", "tmpl")
 	h.Index(w, r)
 
@@ -72,7 +74,8 @@ func TestStoreAuthenticateOK(t *testing.T) {
 
 	// Call the handler.
 	h := new(login.Handler)
-	h.UserService = new(user.MockService)
+	db := new(database.MockService)
+	h.UserService = database.NewUserService(db)
 	h.ViewService = view.New("../../view", "tmpl")
 
 	// Create a new user.
@@ -104,7 +107,8 @@ func TestStoreAuthenticateFail(t *testing.T) {
 
 	// Call the handler.
 	h := new(login.Handler)
-	h.UserService = new(user.MockService)
+	db := new(database.MockService)
+	h.UserService = database.NewUserService(db)
 	h.ViewService = view.New("../../view", "tmpl")
 
 	// Create a new user.

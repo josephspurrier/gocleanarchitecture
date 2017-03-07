@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/josephspurrier/gocleanarchitecture/controller/register"
-	"github.com/josephspurrier/gocleanarchitecture/domain/user"
+	"github.com/josephspurrier/gocleanarchitecture/database"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
@@ -55,7 +55,8 @@ func TestStoreCreateOK(t *testing.T) {
 
 	// Call the handler.
 	h := new(register.Handler)
-	h.UserService = new(user.MockService)
+	db := new(database.MockService)
+	h.UserService = database.NewUserService(db)
 	h.ViewService = view.New("../../view", "tmpl")
 	h.Index(w, r)
 
@@ -79,7 +80,8 @@ func TestStoreCreateNoFieldFail(t *testing.T) {
 
 	// Call the handler.
 	h := new(register.Handler)
-	h.UserService = new(user.MockService)
+	db := new(database.MockService)
+	h.UserService = database.NewUserService(db)
 	h.ViewService = view.New("../../view", "tmpl")
 	h.Index(w, r)
 
@@ -107,7 +109,8 @@ func TestStoreCreateOneMissingFieldFail(t *testing.T) {
 
 	// Call the handler.
 	h := new(register.Handler)
-	h.UserService = new(user.MockService)
+	db := new(database.MockService)
+	h.UserService = database.NewUserService(db)
 	h.ViewService = view.New("../../view", "tmpl")
 	h.Index(w, r)
 
