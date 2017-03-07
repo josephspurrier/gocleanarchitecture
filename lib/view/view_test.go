@@ -9,19 +9,23 @@ import (
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
+// BadResponseWriter represents a http.ResponseWriter that always fails.
 type BadResponseWriter struct {
 	Failed bool
 }
 
+// Header returns an emtpy header.
 func (w *BadResponseWriter) Header() http.Header {
 	return make(http.Header)
 }
 
+// Write always returns 0 and an error.
 func (w *BadResponseWriter) Write(p []byte) (int, error) {
 	w.Failed = true
 	return 0, errors.New("Writer failure.")
 }
 
+// WriteHeader does nothing.
 func (w *BadResponseWriter) WriteHeader(i int) {
 }
 
