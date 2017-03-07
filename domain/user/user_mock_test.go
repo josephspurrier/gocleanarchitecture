@@ -55,4 +55,9 @@ func TestAuthenticate(t *testing.T) {
 	u.Password = "BadPa$$w0rd"
 	err = s.Authenticate(u)
 	AssertEqual(t, err, user.ErrPasswordNotMatch)
+
+	// Test failed user authentication.
+	u.Email = "bfranklin@example.com"
+	err = s.Authenticate(u)
+	AssertEqual(t, err, user.ErrNotFound)
 }
