@@ -1,6 +1,7 @@
 package database_test
 
 import (
+	"io/ioutil"
 	"os"
 	"testing"
 
@@ -27,4 +28,28 @@ func TestClient(t *testing.T) {
 
 	// Cleanup
 	os.Remove("db.json")
+}
+
+// TestClient ensures the client fails properly.
+func TestClientFail(t *testing.T) {
+	c := database.NewClient("")
+
+	// Check the output.
+	AssertEqual(t, c.Path, "")
+	AssertNotNil(t, c.Write())
+	AssertNotNil(t, c.Read())
+}
+
+// TestClientFailOpen ensures the client fails properly.
+func TestClientFailOpen(t *testing.T) {
+	c := database.NewClient("dbbad.json")
+
+	// Write a bad file.
+	ioutil.WriteFile("dbbad.json", []byte("{"), 0644)
+
+	// Check the output.
+	AssertNotNil(t, c.Read())
+
+	// Cleanup
+	os.Remove("dbbad.json")
 }
