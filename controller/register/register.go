@@ -14,7 +14,7 @@ type Handler struct {
 	ViewService view.Service
 }
 
-// Index displays the logon screen.
+// Index displays the register screen.
 func (h *Handler) Index(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		h.Store(w, r)
@@ -29,6 +29,7 @@ func (h *Handler) Store(w http.ResponseWriter, r *http.Request) {
 	// Don't continue if required fields are missing.
 	for _, v := range []string{"firstname", "lastname", "email", "password"} {
 		if len(r.FormValue(v)) == 0 {
+			w.WriteHeader(http.StatusBadRequest)
 			fmt.Fprint(w, `<html>One or more required fields are missing. `+
 				`Click <a href="/register">here</a> to try again.</html>`)
 			return
@@ -45,10 +46,12 @@ func (h *Handler) Store(w http.ResponseWriter, r *http.Request) {
 	// Add the user to the database.
 	err := h.UserService.CreateUser(u)
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, err)
 		return
 	}
 
+	w.WriteHeader(http.StatusCreated)
 	fmt.Fprint(w, `<html>User created. `+
 		`Click <a href="/">here</a> to login.</html>`)
 }

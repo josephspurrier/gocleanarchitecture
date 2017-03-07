@@ -21,17 +21,23 @@ type Client struct {
 
 	data  *Schema
 	mutex sync.RWMutex
+}
 
-	// Services
-	userService UserService
+// Service represents a service for interacting with the database.
+type Service interface {
+	Read() error
+	Write() error
+	Records() []user.Item
+	AddRecord(user.Item)
 }
 
 // NewClient returns a new database client.
 func NewClient(path string) *Client {
 	c := &Client{
 		Path: path,
+		data: new(Schema),
 	}
-	c.userService.client = c
+
 	return c
 }
 
@@ -88,5 +94,12 @@ func (c *Client) Write() error {
 	return err
 }
 
-// UserService returns the user service associated with the client.
-func (c *Client) UserService() user.Service { return &c.userService }
+// AddRecord adds a record to the database.
+func (c *Client) AddRecord(rec user.Item) {
+	c.data.Records = append(c.data.Records, rec)
+}
+
+// Records retrieves all records from the database.
+func (c *Client) Records() []user.Item {
+	return c.data.Records
+}

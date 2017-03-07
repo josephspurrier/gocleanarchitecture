@@ -18,10 +18,10 @@ func RegisterServices() *Service {
 	s := new(Service)
 
 	// Initialize the clients.
-	dbClient := database.NewClient("db.json")
+	db := database.NewClient("db.json")
 
 	// Store all the services for the application.
-	s.UserService = dbClient.UserService()
+	s.UserService = database.NewUserService(db)
 	s.ViewService = view.New("../../view", "tmpl")
 
 	return s
