@@ -16,6 +16,13 @@ type Handler struct {
 
 // Index displays the logon screen.
 func (h *Handler) Index(w http.ResponseWriter, r *http.Request) {
+	// Handle 404.
+	if r.URL.Path != "/" {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprint(w, "404 page not found")
+		return
+	}
+
 	if r.Method == "POST" {
 		h.Store(w, r)
 		return
