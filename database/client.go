@@ -35,6 +35,7 @@ type Service interface {
 func NewClient(path string) *Client {
 	c := &Client{
 		Path: path,
+		data: new(Schema),
 	}
 
 	return c
