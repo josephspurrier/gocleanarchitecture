@@ -14,7 +14,7 @@ type Handler struct {
 	ViewService view.Service
 }
 
-// Index displays the logon screen.
+// Index displays the register screen.
 func (h *Handler) Index(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		h.Store(w, r)

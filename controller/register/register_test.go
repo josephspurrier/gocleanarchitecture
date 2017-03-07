@@ -1,4 +1,4 @@
-package login_test
+package register_test
 
 import (
 	"net/http"
@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/josephspurrier/gocleanarchitecture/controller/login"
+	"github.com/josephspurrier/gocleanarchitecture/controller/register"
 	"github.com/josephspurrier/gocleanarchitecture/domain/user"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
@@ -28,7 +28,7 @@ func TestIndex(t *testing.T) {
 	}
 
 	// Call the handler.
-	h := new(login.Handler)
+	h := new(register.Handler)
 	h.ViewService = view.New("../../view", "tmpl")
 	h.Index(w, r)
 
@@ -46,7 +46,7 @@ func TestStoreMissingRequiredFields(t *testing.T) {
 	}
 
 	// Call the handler.
-	h := new(login.Handler)
+	h := new(register.Handler)
 	h.UserService = new(user.MockService)
 	h.ViewService = view.New("../../view", "tmpl")
 	h.Index(w, r)
@@ -55,8 +55,8 @@ func TestStoreMissingRequiredFields(t *testing.T) {
 	AssertEqual(t, w.Code, http.StatusBadRequest)
 }
 
-// TestStoreAuthenticateOK ensures login can be successful.
-func TestStoreAuthenticateOK(t *testing.T) {
+// TestStoreCreateOK ensures register can be successful.
+func TestStoreCreateOK(t *testing.T) {
 	// Set up the request.
 	w := httptest.NewRecorder()
 	r, err := http.NewRequest("POST", "/", nil)
@@ -67,27 +67,22 @@ func TestStoreAuthenticateOK(t *testing.T) {
 	// Set the request body.
 	val := url.Values{}
 	r.Form = val
+	r.Form.Add("firstname", "John")
+	r.Form.Add("lastname", "Doe")
 	r.Form.Add("email", "jdoe@example.com")
 	r.Form.Add("password", "Pa$$w0rd")
 
 	// Call the handler.
-	h := new(login.Handler)
+	h := new(register.Handler)
 	h.UserService = new(user.MockService)
 	h.ViewService = view.New("../../view", "tmpl")
-
-	// Create a new user.
-	u := new(user.Item)
-	u.Email = "jdoe@example.com"
-	u.Password = "Pa$$w0rd"
-	h.UserService.CreateUser(u)
-
 	h.Index(w, r)
 
 	// Check the output.
-	AssertEqual(t, w.Code, http.StatusOK)
+	AssertEqual(t, w.Code, http.StatusCreated)
 }
 
-// TestStoreAuthenticateFail ensures login can fail.
+// TestStoreAuthenticateFail ensures register can fail.
 func TestStoreAuthenticateFail(t *testing.T) {
 	// Set up the request.
 	w := httptest.NewRecorder()
@@ -103,7 +98,7 @@ func TestStoreAuthenticateFail(t *testing.T) {
 	r.Form.Add("password", "BadPa$$w0rd")
 
 	// Call the handler.
-	h := new(login.Handler)
+	h := new(register.Handler)
 	h.UserService = new(user.MockService)
 	h.ViewService = view.New("../../view", "tmpl")
 
@@ -116,5 +111,5 @@ func TestStoreAuthenticateFail(t *testing.T) {
 	h.Index(w, r)
 
 	// Check the output.
-	AssertEqual(t, w.Code, http.StatusUnauthorized)
+	AssertEqual(t, w.Code, http.StatusBadRequest)
 }

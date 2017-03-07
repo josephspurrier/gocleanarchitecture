@@ -70,6 +70,5 @@ func (s *MockService) CreateUser(d *Item) error {
 
 	s.mutex.Unlock()
 
-	// Save the record to the database.
 	return nil
 }
