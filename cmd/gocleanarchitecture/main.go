@@ -16,7 +16,8 @@ func main() {
 	// handler with all the routes.
 	h := s.LoadRoutes()
 
-	log.Println("Server running...")
+	// Display message on the server.
+	log.Println("Server started.")
 
 	// Run the web listener.
 	http.Handle("/", h)
