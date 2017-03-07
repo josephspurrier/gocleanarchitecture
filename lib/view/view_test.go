@@ -1,12 +1,29 @@
 package view_test
 
 import (
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
+
+type BadResponseWriter struct {
+	Failed bool
+}
+
+func (w *BadResponseWriter) Header() http.Header {
+	return make(http.Header)
+}
+
+func (w *BadResponseWriter) Write(p []byte) (int, error) {
+	w.Failed = true
+	return 0, errors.New("Writer failure.")
+}
+
+func (w *BadResponseWriter) WriteHeader(i int) {
+}
 
 // AssertEqual throws an error if the two values are not equal.
 func AssertEqual(t *testing.T, actualValue interface{}, expectedValue interface{}) {
@@ -42,4 +59,9 @@ func TestRenderFail(t *testing.T) {
 	// Fail on template parse error.
 	v.Render(w, r)
 	AssertEqual(t, w.Code, http.StatusInternalServerError)
+
+	// Fail on file parse error.
+	br := new(BadResponseWriter)
+	v.Render(br, r)
+	AssertEqual(t, br.Failed, true)
 }
