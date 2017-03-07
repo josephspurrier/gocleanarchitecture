@@ -11,6 +11,16 @@ import (
 func TestMockService(t *testing.T) {
 	// Test the reading and writing.
 	s := new(database.MockService)
+
+	// Test forced failures.
+	s.WriteFail = true
+	s.ReadFail = true
+	AssertNotNil(t, s.Read())
+	AssertNotNil(t, s.Write())
+
+	// Test no failures.
+	s.WriteFail = false
+	s.ReadFail = false
 	AssertEqual(t, s.Read(), nil)
 	AssertEqual(t, s.Write(), nil)
 

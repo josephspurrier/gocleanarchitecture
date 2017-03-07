@@ -57,3 +57,33 @@ func TestAuthenticate(t *testing.T) {
 	err = s.Authenticate(u)
 	AssertEqual(t, err, user.ErrNotFound)
 }
+
+// TestUserFailures ensures fails properly.
+func TestUserFailures(t *testing.T) {
+	// Test user creation.
+	db := new(database.MockService)
+	s := database.NewUserService(db)
+
+	db.WriteFail = true
+	db.ReadFail = true
+
+	u := new(user.Item)
+	u.Email = "ssmith@example.com"
+	u.Password = "Pa$$w0rd"
+	err := s.CreateUser(u)
+	AssertNotNil(t, err)
+
+	// Test user authentication.
+	err = s.Authenticate(u)
+	AssertNotNil(t, err)
+
+	// Test failed user authentication.
+	u.Password = "BadPa$$w0rd"
+	err = s.Authenticate(u)
+	AssertNotNil(t, err)
+
+	// Test failed user authentication.
+	u.Email = "bfranklin@example.com"
+	err = s.Authenticate(u)
+	AssertNotNil(t, err)
+}
