@@ -63,9 +63,21 @@ func TestRenderFail(t *testing.T) {
 	// Fail on template parse error.
 	v.Render(w, r)
 	AssertEqual(t, w.Code, http.StatusInternalServerError)
+}
+
+// TestRenderExecuteFail ensures render fails properly.
+func TestRenderExecuteFail(t *testing.T) {
+	// Test adding and retrieving a variable.
+	v := view.New("../../view", "tmpl")
+
+	// Set up the request.
+	br := new(BadResponseWriter)
+	r, err := http.NewRequest("GET", "/", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	// Fail on file parse error.
-	br := new(BadResponseWriter)
 	v.Render(br, r)
 	AssertEqual(t, br.Failed, true)
 }

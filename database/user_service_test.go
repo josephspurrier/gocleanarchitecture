@@ -77,9 +77,8 @@ func TestUserFailures(t *testing.T) {
 	err = s.Authenticate(u)
 	AssertNotNil(t, err)
 
-	// Test failed user authentication.
-	u.Password = "BadPa$$w0rd"
-	err = s.Authenticate(u)
+	// Test failed user query.
+	_, err = s.User("favalon@example.com")
 	AssertNotNil(t, err)
 
 	// Test failed user authentication.
