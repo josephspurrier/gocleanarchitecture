@@ -61,6 +61,11 @@ func TestStoreCreateOK(t *testing.T) {
 
 	// Check the output.
 	AssertEqual(t, w.Code, http.StatusCreated)
+
+	// Fail on duplicate creation.
+	w = httptest.NewRecorder()
+	h.Index(w, r)
+	AssertEqual(t, w.Code, http.StatusInternalServerError)
 }
 
 // TestStoreCreateNoFieldFail ensures register can fail with no fields.
