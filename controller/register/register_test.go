@@ -36,25 +36,6 @@ func TestIndex(t *testing.T) {
 	AssertEqual(t, w.Code, http.StatusOK)
 }
 
-// TestStoreMissingRequiredField ensures required fields should be entered.
-func TestStoreMissingRequiredFields(t *testing.T) {
-	// Set up the request.
-	w := httptest.NewRecorder()
-	r, err := http.NewRequest("POST", "/", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	// Call the handler.
-	h := new(register.Handler)
-	h.UserService = new(user.MockService)
-	h.ViewService = view.New("../../view", "tmpl")
-	h.Index(w, r)
-
-	// Check the output.
-	AssertEqual(t, w.Code, http.StatusBadRequest)
-}
-
 // TestStoreCreateOK ensures register can be successful.
 func TestStoreCreateOK(t *testing.T) {
 	// Set up the request.
@@ -82,8 +63,28 @@ func TestStoreCreateOK(t *testing.T) {
 	AssertEqual(t, w.Code, http.StatusCreated)
 }
 
-// TestStoreAuthenticateFail ensures register can fail.
-func TestStoreAuthenticateFail(t *testing.T) {
+// TestStoreCreateNoFieldFail ensures register can fail with no fields.
+func TestStoreCreateNoFieldFail(t *testing.T) {
+	// Set up the request.
+	w := httptest.NewRecorder()
+	r, err := http.NewRequest("POST", "/", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Call the handler.
+	h := new(register.Handler)
+	h.UserService = new(user.MockService)
+	h.ViewService = view.New("../../view", "tmpl")
+	h.Index(w, r)
+
+	// Check the output.
+	AssertEqual(t, w.Code, http.StatusBadRequest)
+}
+
+// TestStoreCreateOneMissingFieldFail ensures register can fail with one missing
+// field.
+func TestStoreCreateOneMissingFieldFail(t *testing.T) {
 	// Set up the request.
 	w := httptest.NewRecorder()
 	r, err := http.NewRequest("POST", "/", nil)
@@ -94,20 +95,15 @@ func TestStoreAuthenticateFail(t *testing.T) {
 	// Set the request body.
 	val := url.Values{}
 	r.Form = val
-	r.Form.Add("email", "jdoe2@example.com")
-	r.Form.Add("password", "BadPa$$w0rd")
+	r.Form.Add("firstname", "John")
+	//r.Form.Add("lastname", "Doe")
+	r.Form.Add("email", "jdoe@example.com")
+	r.Form.Add("password", "Pa$$w0rd")
 
 	// Call the handler.
 	h := new(register.Handler)
 	h.UserService = new(user.MockService)
 	h.ViewService = view.New("../../view", "tmpl")
-
-	// Create a new user.
-	u := new(user.Item)
-	u.Email = "jdoe2@example.com"
-	u.Password = "Pa$$w0rd"
-	h.UserService.CreateUser(u)
-
 	h.Index(w, r)
 
 	// Check the output.
