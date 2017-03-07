@@ -100,7 +100,7 @@ func TestStoreAuthenticateFail(t *testing.T) {
 	val := url.Values{}
 	r.Form = val
 	r.Form.Add("email", "jdoe2@example.com")
-	r.Form.Add("password", "Pa$$w0rd")
+	r.Form.Add("password", "BadPa$$w0rd")
 
 	// Call the handler.
 	h := new(login.Handler)
@@ -110,7 +110,7 @@ func TestStoreAuthenticateFail(t *testing.T) {
 	// Create a new user.
 	u := new(user.Item)
 	u.Email = "jdoe2@example.com"
-	u.Password = "BadPa$$w0rd"
+	u.Password = "Pa$$w0rd"
 	h.UserService.CreateUser(u)
 
 	h.ViewService = view.New("../../view", "tmpl")
