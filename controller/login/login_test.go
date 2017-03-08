@@ -8,7 +8,7 @@ import (
 
 	"github.com/josephspurrier/gocleanarchitecture/controller/login"
 	"github.com/josephspurrier/gocleanarchitecture/database"
-	"github.com/josephspurrier/gocleanarchitecture/domain/user"
+	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
@@ -79,7 +79,7 @@ func TestStoreAuthenticateOK(t *testing.T) {
 	h.ViewService = view.New("../../view", "tmpl")
 
 	// Create a new user.
-	u := new(user.Item)
+	u := new(domain.User)
 	u.Email = "jdoe@example.com"
 	u.Password = "Pa$$w0rd"
 	h.UserService.CreateUser(u)
@@ -112,7 +112,7 @@ func TestStoreAuthenticateFail(t *testing.T) {
 	h.ViewService = view.New("../../view", "tmpl")
 
 	// Create a new user.
-	u := new(user.Item)
+	u := new(domain.User)
 	u.Email = "jdoe2@example.com"
 	u.Password = "Pa$$w0rd"
 	h.UserService.CreateUser(u)

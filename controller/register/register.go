@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/josephspurrier/gocleanarchitecture/domain/user"
+	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
 // Handler represents the services required for this controller.
 type Handler struct {
-	UserService user.Service
+	UserService domain.UserService
 	ViewService view.Service
 }
 
@@ -37,7 +37,7 @@ func (h *Handler) Store(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Build the user from the form values.
-	u := new(user.Item)
+	u := new(domain.User)
 	u.FirstName = r.FormValue("firstname")
 	u.LastName = r.FormValue("lastname")
 	u.Email = r.FormValue("email")

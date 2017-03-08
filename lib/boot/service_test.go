@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/josephspurrier/gocleanarchitecture/domain/user"
+	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/boot"
 )
 
@@ -15,7 +15,7 @@ func TestRegisterServices(t *testing.T) {
 
 	// Test the user service.
 	_, err := s.UserService.User("notexist")
-	AssertEqual(t, err, user.ErrNotFound)
+	AssertEqual(t, err, domain.ErrUserNotFound)
 
 	// Test the view service.
 	v := s.ViewService.AddVar("foo", "bar").GetVar("foo")

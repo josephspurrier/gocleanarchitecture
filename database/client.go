@@ -6,12 +6,12 @@ import (
 	"os"
 	"sync"
 
-	"github.com/josephspurrier/gocleanarchitecture/domain/user"
+	"github.com/josephspurrier/gocleanarchitecture/domain"
 )
 
 // Schema represents the database structure.
 type Schema struct {
-	Records []user.Item
+	Records []domain.User
 }
 
 // Client represents a client to the data store.
@@ -27,8 +27,8 @@ type Client struct {
 type Service interface {
 	Read() error
 	Write() error
-	Records() []user.Item
-	AddRecord(user.Item)
+	Records() []domain.User
+	AddRecord(domain.User)
 }
 
 // NewClient returns a new database client.
@@ -95,11 +95,11 @@ func (c *Client) Write() error {
 }
 
 // AddRecord adds a record to the database.
-func (c *Client) AddRecord(rec user.Item) {
+func (c *Client) AddRecord(rec domain.User) {
 	c.data.Records = append(c.data.Records, rec)
 }
 
 // Records retrieves all records from the database.
-func (c *Client) Records() []user.Item {
+func (c *Client) Records() []domain.User {
 	return c.data.Records
 }
