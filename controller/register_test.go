@@ -1,4 +1,4 @@
-package controller
+package controller_test
 
 import (
 	"net/http"
@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"testing"
 
+	"github.com/josephspurrier/gocleanarchitecture/controller"
 	"github.com/josephspurrier/gocleanarchitecture/database"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
@@ -20,7 +21,7 @@ func TestRegisterIndex(t *testing.T) {
 	}
 
 	// Call the handler.
-	h := new(RegisterHandler)
+	h := new(controller.RegisterHandler)
 	h.ViewService = view.New("../view", "tmpl")
 	h.Index(w, r)
 
@@ -46,7 +47,7 @@ func TesttRegisterStoreCreateOK(t *testing.T) {
 	r.Form.Add("password", "Pa$$w0rd")
 
 	// Call the handler.
-	h := new(RegisterHandler)
+	h := new(controller.RegisterHandler)
 	db := new(database.MockService)
 	h.UserService = database.NewUserService(db)
 	h.ViewService = view.New("../view", "tmpl")
@@ -71,7 +72,7 @@ func TesttRegisterStoreCreateNoFieldFail(t *testing.T) {
 	}
 
 	// Call the handler.
-	h := new(RegisterHandler)
+	h := new(controller.RegisterHandler)
 	db := new(database.MockService)
 	h.UserService = database.NewUserService(db)
 	h.ViewService = view.New("../view", "tmpl")
@@ -100,7 +101,7 @@ func TesttRegisterStoreCreateOneMissingFieldFail(t *testing.T) {
 	r.Form.Add("password", "Pa$$w0rd")
 
 	// Call the handler.
-	h := new(RegisterHandler)
+	h := new(controller.RegisterHandler)
 	db := new(database.MockService)
 	h.UserService = database.NewUserService(db)
 	h.ViewService = view.New("../view", "tmpl")
