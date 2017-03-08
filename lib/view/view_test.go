@@ -1,12 +1,10 @@
-package view_test
+package view
 
 import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
-
-	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
 // BadResponseWriter represents a http.ResponseWriter that always fails.
@@ -39,7 +37,7 @@ func AssertEqual(t *testing.T, actualValue interface{}, expectedValue interface{
 // TestVar ensures the var functions work properly.
 func TestVar(t *testing.T) {
 	// Test adding and retrieving a variable.
-	v := view.New("", "")
+	v := New("", "")
 	v.AddVar("foo", "bar")
 	AssertEqual(t, v.GetVar("foo"), "bar")
 
@@ -51,7 +49,7 @@ func TestVar(t *testing.T) {
 // TestRenderFail ensures render fails properly.
 func TestRenderFail(t *testing.T) {
 	// Test adding and retrieving a variable.
-	v := view.New("", "")
+	v := New("", "")
 
 	// Set up the request.
 	w := httptest.NewRecorder()
@@ -68,7 +66,7 @@ func TestRenderFail(t *testing.T) {
 // TestRenderExecuteFail ensures render fails properly.
 func TestRenderExecuteFail(t *testing.T) {
 	// Test adding and retrieving a variable.
-	v := view.New("../../view", "tmpl")
+	v := New("../../view", "tmpl")
 
 	// Set up the request.
 	br := new(BadResponseWriter)

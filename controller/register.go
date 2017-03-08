@@ -1,21 +1,21 @@
-package register
+package controller
 
 import (
 	"fmt"
 	"net/http"
 
-	"github.com/josephspurrier/gocleanarchitecture/domain/user"
+	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
-// Handler represents the services required for this controller.
-type Handler struct {
-	UserService user.Service
+// RegisterHandler represents the services required for this controller.
+type RegisterHandler struct {
+	UserService domain.UserService
 	ViewService view.Service
 }
 
 // Index displays the register screen.
-func (h *Handler) Index(w http.ResponseWriter, r *http.Request) {
+func (h *RegisterHandler) Index(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		h.Store(w, r)
 		return
@@ -25,7 +25,7 @@ func (h *Handler) Index(w http.ResponseWriter, r *http.Request) {
 }
 
 // Store adds a user to the database.
-func (h *Handler) Store(w http.ResponseWriter, r *http.Request) {
+func (h *RegisterHandler) Store(w http.ResponseWriter, r *http.Request) {
 	// Don't continue if required fields are missing.
 	for _, v := range []string{"firstname", "lastname", "email", "password"} {
 		if len(r.FormValue(v)) == 0 {
@@ -37,7 +37,7 @@ func (h *Handler) Store(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Build the user from the form values.
-	u := new(user.Item)
+	u := new(domain.User)
 	u.FirstName = r.FormValue("firstname")
 	u.LastName = r.FormValue("lastname")
 	u.Email = r.FormValue("email")

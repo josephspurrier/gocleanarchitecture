@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/josephspurrier/gocleanarchitecture/database"
-	"github.com/josephspurrier/gocleanarchitecture/domain/user"
+	"github.com/josephspurrier/gocleanarchitecture/domain"
 )
 
 // TestClient ensures the client works properly.
@@ -20,7 +20,7 @@ func TestClient(t *testing.T) {
 	AssertEqual(t, c.Write(), nil)
 
 	// Test adding a record and reading it.
-	u := new(user.Item)
+	u := new(domain.User)
 	u.Email = "jdoe@example.com"
 	u.Password = "Pa$$w0rd"
 	c.AddRecord(*u)

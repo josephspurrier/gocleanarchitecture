@@ -4,12 +4,12 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/josephspurrier/gocleanarchitecture/domain/user"
+	"github.com/josephspurrier/gocleanarchitecture/domain"
 )
 
 // MockService represents a service for managing users.
 type MockService struct {
-	records   []user.Item
+	records   []domain.User
 	mutex     sync.RWMutex
 	ReadFail  bool
 	WriteFail bool
@@ -32,14 +32,14 @@ func (c *MockService) Write() error {
 }
 
 // AddRecord adds a record to the database.
-func (c *MockService) AddRecord(rec user.Item) {
+func (c *MockService) AddRecord(rec domain.User) {
 	c.mutex.Lock()
 	c.records = append(c.records, rec)
 	c.mutex.Unlock()
 }
 
 // Records retrieves all records from the database.
-func (c *MockService) Records() []user.Item {
+func (c *MockService) Records() []domain.User {
 	c.mutex.RLock()
 	r := c.records
 	c.mutex.RUnlock()

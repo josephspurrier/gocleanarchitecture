@@ -2,13 +2,13 @@ package boot
 
 import (
 	"github.com/josephspurrier/gocleanarchitecture/database"
-	"github.com/josephspurrier/gocleanarchitecture/domain/user"
+	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
 // Service represents all the services that the application uses.
 type Service struct {
-	UserService user.Service
+	UserService domain.UserService
 	ViewService view.Service
 }
 
