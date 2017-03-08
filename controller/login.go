@@ -1,4 +1,4 @@
-package login
+package controller
 
 import (
 	"fmt"
@@ -8,14 +8,14 @@ import (
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
-// Handler represents the services required for this controller.
-type Handler struct {
+// LoginHandler represents the services required for this controller.
+type LoginHandler struct {
 	UserService domain.UserService
 	ViewService view.Service
 }
 
 // Index displays the logon screen.
-func (h *Handler) Index(w http.ResponseWriter, r *http.Request) {
+func (h *LoginHandler) Index(w http.ResponseWriter, r *http.Request) {
 	// Handle 404.
 	if r.URL.Path != "/" {
 		w.WriteHeader(http.StatusNotFound)
@@ -32,7 +32,7 @@ func (h *Handler) Index(w http.ResponseWriter, r *http.Request) {
 }
 
 // Store handles the submission of the login information.
-func (h *Handler) Store(w http.ResponseWriter, r *http.Request) {
+func (h *LoginHandler) Store(w http.ResponseWriter, r *http.Request) {
 	// Don't continue if required fields are missing.
 	for _, v := range []string{"email", "password"} {
 		if len(r.FormValue(v)) == 0 {

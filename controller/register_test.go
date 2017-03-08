@@ -1,4 +1,4 @@
-package register_test
+package controller
 
 import (
 	"net/http"
@@ -6,20 +6,12 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/josephspurrier/gocleanarchitecture/controller/register"
 	"github.com/josephspurrier/gocleanarchitecture/database"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
-// AssertEqual throws an error if the two values are not equal.
-func AssertEqual(t *testing.T, actualValue interface{}, expectedValue interface{}) {
-	if actualValue != expectedValue {
-		t.Errorf("\n got: %v\nwant: %v", actualValue, expectedValue)
-	}
-}
-
-// TestIndex ensures the index function returns a 200 code.
-func TestIndex(t *testing.T) {
+// TesttRegisterIndex ensures the index function returns a 200 code.
+func TestRegisterIndex(t *testing.T) {
 	// Set up the request.
 	w := httptest.NewRecorder()
 	r, err := http.NewRequest("GET", "/", nil)
@@ -28,16 +20,16 @@ func TestIndex(t *testing.T) {
 	}
 
 	// Call the handler.
-	h := new(register.Handler)
-	h.ViewService = view.New("../../view", "tmpl")
+	h := new(RegisterHandler)
+	h.ViewService = view.New("../view", "tmpl")
 	h.Index(w, r)
 
 	// Check the output.
 	AssertEqual(t, w.Code, http.StatusOK)
 }
 
-// TestStoreCreateOK ensures register can be successful.
-func TestStoreCreateOK(t *testing.T) {
+// TesttRegisterStoreCreateOK ensures register can be successful.
+func TesttRegisterStoreCreateOK(t *testing.T) {
 	// Set up the request.
 	w := httptest.NewRecorder()
 	r, err := http.NewRequest("POST", "/", nil)
@@ -54,10 +46,10 @@ func TestStoreCreateOK(t *testing.T) {
 	r.Form.Add("password", "Pa$$w0rd")
 
 	// Call the handler.
-	h := new(register.Handler)
+	h := new(RegisterHandler)
 	db := new(database.MockService)
 	h.UserService = database.NewUserService(db)
-	h.ViewService = view.New("../../view", "tmpl")
+	h.ViewService = view.New("../view", "tmpl")
 	h.Index(w, r)
 
 	// Check the output.
@@ -69,8 +61,8 @@ func TestStoreCreateOK(t *testing.T) {
 	AssertEqual(t, w.Code, http.StatusInternalServerError)
 }
 
-// TestStoreCreateNoFieldFail ensures register can fail with no fields.
-func TestStoreCreateNoFieldFail(t *testing.T) {
+// TestRegisterStoreCreateNoFieldFail ensures register can fail with no fields.
+func TesttRegisterStoreCreateNoFieldFail(t *testing.T) {
 	// Set up the request.
 	w := httptest.NewRecorder()
 	r, err := http.NewRequest("POST", "/", nil)
@@ -79,19 +71,19 @@ func TestStoreCreateNoFieldFail(t *testing.T) {
 	}
 
 	// Call the handler.
-	h := new(register.Handler)
+	h := new(RegisterHandler)
 	db := new(database.MockService)
 	h.UserService = database.NewUserService(db)
-	h.ViewService = view.New("../../view", "tmpl")
+	h.ViewService = view.New("../view", "tmpl")
 	h.Index(w, r)
 
 	// Check the output.
 	AssertEqual(t, w.Code, http.StatusBadRequest)
 }
 
-// TestStoreCreateOneMissingFieldFail ensures register can fail with one missing
+// TesttRegisterStoreCreateOneMissingFieldFail ensures register can fail with one missing
 // field.
-func TestStoreCreateOneMissingFieldFail(t *testing.T) {
+func TesttRegisterStoreCreateOneMissingFieldFail(t *testing.T) {
 	// Set up the request.
 	w := httptest.NewRecorder()
 	r, err := http.NewRequest("POST", "/", nil)
@@ -108,10 +100,10 @@ func TestStoreCreateOneMissingFieldFail(t *testing.T) {
 	r.Form.Add("password", "Pa$$w0rd")
 
 	// Call the handler.
-	h := new(register.Handler)
+	h := new(RegisterHandler)
 	db := new(database.MockService)
 	h.UserService = database.NewUserService(db)
-	h.ViewService = view.New("../../view", "tmpl")
+	h.ViewService = view.New("../view", "tmpl")
 	h.Index(w, r)
 
 	// Check the output.

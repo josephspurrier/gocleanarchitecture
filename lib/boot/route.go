@@ -3,8 +3,7 @@ package boot
 import (
 	"net/http"
 
-	"github.com/josephspurrier/gocleanarchitecture/controller/login"
-	"github.com/josephspurrier/gocleanarchitecture/controller/register"
+	"github.com/josephspurrier/gocleanarchitecture/controller"
 )
 
 // LoadRoutes returns a handler with all the routes.
@@ -23,7 +22,7 @@ func (s *Service) LoadRoutes() http.Handler {
 // AddLogin registers the login handlers.
 func (s *Service) AddLogin(mux *http.ServeMux) {
 	// Create handler.
-	h := new(login.Handler)
+	h := new(controller.LoginHandler)
 
 	// Assign services.
 	h.UserService = s.UserService
@@ -36,7 +35,7 @@ func (s *Service) AddLogin(mux *http.ServeMux) {
 // AddRegister registers the register handlers.
 func (s *Service) AddRegister(mux *http.ServeMux) {
 	// Create handler.
-	h := new(register.Handler)
+	h := new(controller.RegisterHandler)
 
 	// Assign services.
 	h.UserService = s.UserService

@@ -1,4 +1,4 @@
-package login_test
+package controller
 
 import (
 	"net/http"
@@ -6,21 +6,13 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/josephspurrier/gocleanarchitecture/controller/login"
 	"github.com/josephspurrier/gocleanarchitecture/database"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
-// AssertEqual throws an error if the two values are not equal.
-func AssertEqual(t *testing.T, actualValue interface{}, expectedValue interface{}) {
-	if actualValue != expectedValue {
-		t.Errorf("\n got: %v\nwant: %v", actualValue, expectedValue)
-	}
-}
-
-// TestIndex ensures the index function returns a 200 code.
-func TestIndex(t *testing.T) {
+// TestLoginIndex ensures the index function returns a 200 code.
+func TestLoginIndex(t *testing.T) {
 	// Set up the request.
 	w := httptest.NewRecorder()
 	r, err := http.NewRequest("GET", "/", nil)
@@ -29,16 +21,16 @@ func TestIndex(t *testing.T) {
 	}
 
 	// Call the handler.
-	h := new(login.Handler)
-	h.ViewService = view.New("../../view", "tmpl")
+	h := new(LoginHandler)
+	h.ViewService = view.New("../view", "tmpl")
 	h.Index(w, r)
 
 	// Check the output.
 	AssertEqual(t, w.Code, http.StatusOK)
 }
 
-// TestStoreMissingRequiredField ensures required fields should be entered.
-func TestStoreMissingRequiredFields(t *testing.T) {
+// TestLoginStoreMissingRequiredField ensures required fields should be entered.
+func TestLoginStoreMissingRequiredFields(t *testing.T) {
 	// Set up the request.
 	w := httptest.NewRecorder()
 	r, err := http.NewRequest("POST", "/", nil)
@@ -47,18 +39,18 @@ func TestStoreMissingRequiredFields(t *testing.T) {
 	}
 
 	// Call the handler.
-	h := new(login.Handler)
+	h := new(LoginHandler)
 	db := new(database.MockService)
 	h.UserService = database.NewUserService(db)
-	h.ViewService = view.New("../../view", "tmpl")
+	h.ViewService = view.New("../view", "tmpl")
 	h.Index(w, r)
 
 	// Check the output.
 	AssertEqual(t, w.Code, http.StatusBadRequest)
 }
 
-// TestStoreAuthenticateOK ensures login can be successful.
-func TestStoreAuthenticateOK(t *testing.T) {
+// TestLoginStoreAuthenticateOK ensures login can be successful.
+func TestLoginStoreAuthenticateOK(t *testing.T) {
 	// Set up the request.
 	w := httptest.NewRecorder()
 	r, err := http.NewRequest("POST", "/", nil)
@@ -73,10 +65,10 @@ func TestStoreAuthenticateOK(t *testing.T) {
 	r.Form.Add("password", "Pa$$w0rd")
 
 	// Call the handler.
-	h := new(login.Handler)
+	h := new(LoginHandler)
 	db := new(database.MockService)
 	h.UserService = database.NewUserService(db)
-	h.ViewService = view.New("../../view", "tmpl")
+	h.ViewService = view.New("../view", "tmpl")
 
 	// Create a new user.
 	u := new(domain.User)
@@ -90,8 +82,8 @@ func TestStoreAuthenticateOK(t *testing.T) {
 	AssertEqual(t, w.Code, http.StatusOK)
 }
 
-// TestStoreAuthenticateFail ensures login can fail.
-func TestStoreAuthenticateFail(t *testing.T) {
+// TestLoginStoreAuthenticateFail ensures login can fail.
+func TestLoginStoreAuthenticateFail(t *testing.T) {
 	// Set up the request.
 	w := httptest.NewRecorder()
 	r, err := http.NewRequest("POST", "/", nil)
@@ -106,10 +98,10 @@ func TestStoreAuthenticateFail(t *testing.T) {
 	r.Form.Add("password", "BadPa$$w0rd")
 
 	// Call the handler.
-	h := new(login.Handler)
+	h := new(LoginHandler)
 	db := new(database.MockService)
 	h.UserService = database.NewUserService(db)
-	h.ViewService = view.New("../../view", "tmpl")
+	h.ViewService = view.New("../view", "tmpl")
 
 	// Create a new user.
 	u := new(domain.User)
