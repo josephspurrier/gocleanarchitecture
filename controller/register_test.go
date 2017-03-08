@@ -11,7 +11,7 @@ import (
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
-// TesttRegisterIndex ensures the index function returns a 200 code.
+// TestRegisterIndex ensures the index function returns a 200 code.
 func TestRegisterIndex(t *testing.T) {
 	// Set up the request.
 	w := httptest.NewRecorder()
@@ -29,8 +29,8 @@ func TestRegisterIndex(t *testing.T) {
 	AssertEqual(t, w.Code, http.StatusOK)
 }
 
-// TesttRegisterStoreCreateOK ensures register can be successful.
-func TesttRegisterStoreCreateOK(t *testing.T) {
+// TestRegisterStoreCreateOK ensures register can be successful.
+func TestRegisterStoreCreateOK(t *testing.T) {
 	// Set up the request.
 	w := httptest.NewRecorder()
 	r, err := http.NewRequest("POST", "/", nil)
@@ -63,7 +63,7 @@ func TesttRegisterStoreCreateOK(t *testing.T) {
 }
 
 // TestRegisterStoreCreateNoFieldFail ensures register can fail with no fields.
-func TesttRegisterStoreCreateNoFieldFail(t *testing.T) {
+func TestRegisterStoreCreateNoFieldFail(t *testing.T) {
 	// Set up the request.
 	w := httptest.NewRecorder()
 	r, err := http.NewRequest("POST", "/", nil)
@@ -82,9 +82,9 @@ func TesttRegisterStoreCreateNoFieldFail(t *testing.T) {
 	AssertEqual(t, w.Code, http.StatusBadRequest)
 }
 
-// TesttRegisterStoreCreateOneMissingFieldFail ensures register can fail with one missing
+// TestRegisterStoreCreateOneMissingFieldFail ensures register can fail with one missing
 // field.
-func TesttRegisterStoreCreateOneMissingFieldFail(t *testing.T) {
+func TestRegisterStoreCreateOneMissingFieldFail(t *testing.T) {
 	// Set up the request.
 	w := httptest.NewRecorder()
 	r, err := http.NewRequest("POST", "/", nil)
