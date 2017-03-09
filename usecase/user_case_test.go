@@ -11,7 +11,7 @@ import (
 // TestCreateUser ensures user can be created.
 func TestCreateUser(t *testing.T) {
 	// Test user creation.
-	s := usecase.NewUserService(database.NewUserRepo(new(database.MockService)))
+	s := usecase.NewUserCase(database.NewUserRepo(new(database.MockService)))
 	u := new(domain.User)
 	u.Email = "jdoe@example.com"
 	u.Password = "Pa$$w0rd"
@@ -35,7 +35,7 @@ func TestCreateUser(t *testing.T) {
 // TestAuthenticate ensures user can authenticate.
 func TestAuthenticate(t *testing.T) {
 	// Test user creation.
-	s := usecase.NewUserService(database.NewUserRepo(new(database.MockService)))
+	s := usecase.NewUserCase(database.NewUserRepo(new(database.MockService)))
 	u := new(domain.User)
 	u.Email = "ssmith@example.com"
 	u.Password = "Pa$$w0rd"
@@ -61,7 +61,7 @@ func TestAuthenticate(t *testing.T) {
 func TestUserFailures(t *testing.T) {
 	// Test user creation.
 	db := new(database.MockService)
-	s := usecase.NewUserService(database.NewUserRepo(db))
+	s := usecase.NewUserCase(database.NewUserRepo(db))
 
 	db.WriteFail = true
 	db.ReadFail = true

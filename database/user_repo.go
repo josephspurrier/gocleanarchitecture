@@ -2,12 +2,12 @@ package database
 
 import "github.com/josephspurrier/gocleanarchitecture/domain"
 
-// UserRepo represents a service for managing users in a database.
+// UserRepo represents a service for storage of users.
 type UserRepo struct {
 	client Service
 }
 
-// NewUserRepo returns the service for managing users in a database.
+// NewUserRepo returns the service for storage of users.
 func NewUserRepo(client Service) *UserRepo {
 	s := new(UserRepo)
 	s.client = client
@@ -34,7 +34,7 @@ func (s *UserRepo) FindByEmail(email string) (*domain.User, error) {
 	return item, domain.ErrUserNotFound
 }
 
-// Store adds a user to the database.
+// Store adds a user.
 func (s *UserRepo) Store(item *domain.User) error {
 	// Load the data.
 	err := s.client.Read()

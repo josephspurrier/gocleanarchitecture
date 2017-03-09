@@ -2,20 +2,20 @@ package usecase
 
 import "github.com/josephspurrier/gocleanarchitecture/domain"
 
-// UserService represents a service for managing users.
-type UserService struct {
+// UserCase represents a service for managing users.
+type UserCase struct {
 	userRepo domain.UserRepo
 }
 
-// NewUserServer returns the service for managing users.
-func NewUserService(repo domain.UserRepo) *UserService {
-	s := new(UserService)
+// NewUserCase returns the service for managing users.
+func NewUserCase(repo domain.UserRepo) *UserCase {
+	s := new(UserCase)
 	s.userRepo = repo
 	return s
 }
 
 // Authenticate returns an error if the email and password don't match.
-func (s *UserService) Authenticate(item *domain.User) error {
+func (s *UserCase) Authenticate(item *domain.User) error {
 	q, err := s.userRepo.FindByEmail(item.Email)
 	if err != nil {
 		return domain.ErrUserNotFound
@@ -30,7 +30,7 @@ func (s *UserService) Authenticate(item *domain.User) error {
 }
 
 // User returns a user by email.
-func (s *UserService) User(email string) (*domain.User, error) {
+func (s *UserCase) User(email string) (*domain.User, error) {
 	item, err := s.userRepo.FindByEmail(email)
 	if err != nil {
 		return item, domain.ErrUserNotFound
@@ -40,7 +40,7 @@ func (s *UserService) User(email string) (*domain.User, error) {
 }
 
 // CreateUser creates a new user.
-func (s *UserService) CreateUser(item *domain.User) error {
+func (s *UserCase) CreateUser(item *domain.User) error {
 	_, err := s.userRepo.FindByEmail(item.Email)
 	if err == nil {
 		return domain.ErrUserAlreadyExist
