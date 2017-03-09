@@ -49,9 +49,8 @@ func TestRegisterStoreCreateOK(t *testing.T) {
 
 	// Call the handler.
 	h := new(controller.RegisterHandler)
-	h.UserService = &usecase.UserService{
-		UserRepo: database.NewUserRepo(new(database.MockService)),
-	}
+	h.UserService = usecase.NewUserService(
+		database.NewUserRepo(new(database.MockService)))
 	h.ViewService = view.New("../view", "tmpl")
 	h.Index(w, r)
 
@@ -75,9 +74,8 @@ func TestRegisterStoreCreateNoFieldFail(t *testing.T) {
 
 	// Call the handler.
 	h := new(controller.RegisterHandler)
-	h.UserService = &usecase.UserService{
-		UserRepo: database.NewUserRepo(new(database.MockService)),
-	}
+	h.UserService = usecase.NewUserService(
+		database.NewUserRepo(new(database.MockService)))
 	h.ViewService = view.New("../view", "tmpl")
 	h.Index(w, r)
 
@@ -105,9 +103,8 @@ func TestRegisterStoreCreateOneMissingFieldFail(t *testing.T) {
 
 	// Call the handler.
 	h := new(controller.RegisterHandler)
-	h.UserService = &usecase.UserService{
-		UserRepo: database.NewUserRepo(new(database.MockService)),
-	}
+	h.UserService = usecase.NewUserService(
+		database.NewUserRepo(new(database.MockService)))
 	h.ViewService = view.New("../view", "tmpl")
 	h.Index(w, r)
 

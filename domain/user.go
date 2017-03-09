@@ -25,3 +25,9 @@ type UserService interface {
 	CreateUser(item *User) error
 	Authenticate(item *User) error
 }
+
+// UserRepo represents a service for managing users in a database.
+type UserRepo interface {
+	FindByEmail(email string) (*User, error)
+	Store(item *User) error
+}

@@ -2,18 +2,21 @@ package usecase
 
 import "github.com/josephspurrier/gocleanarchitecture/domain"
 
-type UserRepo interface {
-	Store(item *domain.User) error
-	FindByEmail(email string) (*domain.User, error)
+// UserService represents a service for managing users.
+type UserService struct {
+	userRepo domain.UserRepo
 }
 
-type UserService struct {
-	UserRepo UserRepo
+// NewUserServer returns the service for managing users.
+func NewUserService(repo domain.UserRepo) *UserService {
+	s := new(UserService)
+	s.userRepo = repo
+	return s
 }
 
 // Authenticate returns an error if the email and password don't match.
 func (s *UserService) Authenticate(item *domain.User) error {
-	q, err := s.UserRepo.FindByEmail(item.Email)
+	q, err := s.userRepo.FindByEmail(item.Email)
 	if err != nil {
 		return domain.ErrUserNotFound
 	}
@@ -28,7 +31,7 @@ func (s *UserService) Authenticate(item *domain.User) error {
 
 // User returns a user by email.
 func (s *UserService) User(email string) (*domain.User, error) {
-	item, err := s.UserRepo.FindByEmail(email)
+	item, err := s.userRepo.FindByEmail(email)
 	if err != nil {
 		return item, domain.ErrUserNotFound
 	}
@@ -38,10 +41,10 @@ func (s *UserService) User(email string) (*domain.User, error) {
 
 // CreateUser creates a new user.
 func (s *UserService) CreateUser(item *domain.User) error {
-	_, err := s.UserRepo.FindByEmail(item.Email)
+	_, err := s.userRepo.FindByEmail(item.Email)
 	if err == nil {
 		return domain.ErrUserAlreadyExist
 	}
 
-	return s.UserRepo.Store(item)
+	return s.userRepo.Store(item)
 }

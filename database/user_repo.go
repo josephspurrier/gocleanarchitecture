@@ -14,21 +14,6 @@ func NewUserRepo(client Service) *UserRepo {
 	return s
 }
 
-// Store adds a user to the database.
-func (s *UserRepo) Store(item *domain.User) error {
-	// Load the data.
-	err := s.client.Read()
-	if err != nil {
-		return err
-	}
-
-	// Add the record.
-	s.client.AddRecord(*item)
-
-	// Save the record to the database.
-	return s.client.Write()
-}
-
 // FindByEmail returns a user by an email.
 func (s *UserRepo) FindByEmail(email string) (*domain.User, error) {
 	item := new(domain.User)
@@ -47,4 +32,19 @@ func (s *UserRepo) FindByEmail(email string) (*domain.User, error) {
 	}
 
 	return item, domain.ErrUserNotFound
+}
+
+// Store adds a user to the database.
+func (s *UserRepo) Store(item *domain.User) error {
+	// Load the data.
+	err := s.client.Read()
+	if err != nil {
+		return err
+	}
+
+	// Add the record.
+	s.client.AddRecord(*item)
+
+	// Save the record to the database.
+	return s.client.Write()
 }

@@ -42,9 +42,8 @@ func TestLoginStoreMissingRequiredFields(t *testing.T) {
 
 	// Call the handler.
 	h := new(controller.LoginHandler)
-	h.UserService = &usecase.UserService{
-		UserRepo: database.NewUserRepo(new(database.MockService)),
-	}
+	h.UserService = usecase.NewUserService(
+		database.NewUserRepo(new(database.MockService)))
 	h.ViewService = view.New("../view", "tmpl")
 	h.Index(w, r)
 
@@ -69,9 +68,8 @@ func TestLoginStoreAuthenticateOK(t *testing.T) {
 
 	// Call the handler.
 	h := new(controller.LoginHandler)
-	h.UserService = &usecase.UserService{
-		UserRepo: database.NewUserRepo(new(database.MockService)),
-	}
+	h.UserService = usecase.NewUserService(
+		database.NewUserRepo(new(database.MockService)))
 	h.ViewService = view.New("../view", "tmpl")
 
 	// Create a new user.
@@ -103,9 +101,8 @@ func TestLoginStoreAuthenticateFail(t *testing.T) {
 
 	// Call the handler.
 	h := new(controller.LoginHandler)
-	h.UserService = &usecase.UserService{
-		UserRepo: database.NewUserRepo(new(database.MockService)),
-	}
+	h.UserService = usecase.NewUserService(
+		database.NewUserRepo(new(database.MockService)))
 	h.ViewService = view.New("../view", "tmpl")
 
 	// Create a new user.

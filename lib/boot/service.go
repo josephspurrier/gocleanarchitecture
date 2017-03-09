@@ -22,9 +22,7 @@ func RegisterServices() *Service {
 	db := database.NewClient("db.json")
 
 	// Store all the services for the application.
-	s.UserService = &usecase.UserService{
-		UserRepo: database.NewUserRepo(db),
-	}
+	s.UserService = usecase.NewUserService(database.NewUserRepo(db))
 	s.ViewService = view.New("../../view", "tmpl")
 
 	return s
