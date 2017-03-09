@@ -22,6 +22,6 @@ type User struct {
 // UserService represents a service for managing users.
 type UserService interface {
 	User(email string) (*User, error)
-	CreateUser(user *User) error
-	Authenticate(user *User) error
+	CreateUser(item *User) error
+	Authenticate(item *User) error
 }

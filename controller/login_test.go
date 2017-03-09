@@ -10,6 +10,7 @@ import (
 	"github.com/josephspurrier/gocleanarchitecture/database"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
+	"github.com/josephspurrier/gocleanarchitecture/usecase"
 )
 
 // TestLoginIndex ensures the index function returns a 200 code.
@@ -41,8 +42,9 @@ func TestLoginStoreMissingRequiredFields(t *testing.T) {
 
 	// Call the handler.
 	h := new(controller.LoginHandler)
-	db := new(database.MockService)
-	h.UserService = database.NewUserService(db)
+	h.UserService = &usecase.UserService{
+		UserRepo: database.NewUserRepo(new(database.MockService)),
+	}
 	h.ViewService = view.New("../view", "tmpl")
 	h.Index(w, r)
 
@@ -67,8 +69,9 @@ func TestLoginStoreAuthenticateOK(t *testing.T) {
 
 	// Call the handler.
 	h := new(controller.LoginHandler)
-	db := new(database.MockService)
-	h.UserService = database.NewUserService(db)
+	h.UserService = &usecase.UserService{
+		UserRepo: database.NewUserRepo(new(database.MockService)),
+	}
 	h.ViewService = view.New("../view", "tmpl")
 
 	// Create a new user.
@@ -100,8 +103,9 @@ func TestLoginStoreAuthenticateFail(t *testing.T) {
 
 	// Call the handler.
 	h := new(controller.LoginHandler)
-	db := new(database.MockService)
-	h.UserService = database.NewUserService(db)
+	h.UserService = &usecase.UserService{
+		UserRepo: database.NewUserRepo(new(database.MockService)),
+	}
 	h.ViewService = view.New("../view", "tmpl")
 
 	// Create a new user.
