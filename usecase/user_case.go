@@ -5,12 +5,14 @@ import "github.com/josephspurrier/gocleanarchitecture/domain"
 // UserCase represents a service for managing users.
 type UserCase struct {
 	userRepo domain.UserRepo
+	passhash domain.PasshashCase
 }
 
 // NewUserCase returns the service for managing users.
-func NewUserCase(repo domain.UserRepo) *UserCase {
+func NewUserCase(repo domain.UserRepo, passhash domain.PasshashCase) *UserCase {
 	s := new(UserCase)
 	s.userRepo = repo
+	s.passhash = passhash
 	return s
 }
 
@@ -22,7 +24,7 @@ func (s *UserCase) Authenticate(item *domain.User) error {
 	}
 
 	// If passwords match.
-	if q.Password == item.Password {
+	if s.passhash.Match(q.Password, item.Password) {
 		return nil
 	}
 
@@ -46,5 +48,18 @@ func (s *UserCase) CreateUser(item *domain.User) error {
 		return domain.ErrUserAlreadyExist
 	}
 
-	return s.userRepo.Store(item)
+	passNew, err := s.passhash.Hash(item.Password)
+	if err != nil {
+		return domain.ErrPasswordHash
+	}
+
+	// Swap the password.
+	passOld := item.Password
+	item.Password = passNew
+	err = s.userRepo.Store(item)
+
+	// Restore the password.
+	item.Password = passOld
+
+	return err
 }

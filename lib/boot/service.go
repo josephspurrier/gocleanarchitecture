@@ -2,6 +2,7 @@ package boot
 
 import (
 	"github.com/josephspurrier/gocleanarchitecture/domain"
+	"github.com/josephspurrier/gocleanarchitecture/lib/passhash"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 	"github.com/josephspurrier/gocleanarchitecture/repository"
 	"github.com/josephspurrier/gocleanarchitecture/usecase"
@@ -22,7 +23,9 @@ func RegisterServices() *Service {
 	db := repository.NewClient("db.json")
 
 	// Store all the services for the application.
-	s.UserService = usecase.NewUserCase(repository.NewUserRepo(db))
+	s.UserService = usecase.NewUserCase(
+		repository.NewUserRepo(db),
+		new(passhash.Item))
 	s.ViewService = view.New("../../view", "tmpl")
 
 	return s

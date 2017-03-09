@@ -8,6 +8,7 @@ import (
 
 	"github.com/josephspurrier/gocleanarchitecture/controller"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
+	"github.com/josephspurrier/gocleanarchitecture/lib/passhash"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 	"github.com/josephspurrier/gocleanarchitecture/repository"
 	"github.com/josephspurrier/gocleanarchitecture/usecase"
@@ -43,7 +44,8 @@ func TestLoginStoreMissingRequiredFields(t *testing.T) {
 	// Call the handler.
 	h := new(controller.LoginHandler)
 	h.UserService = usecase.NewUserCase(
-		repository.NewUserRepo(new(repository.MockService)))
+		repository.NewUserRepo(new(repository.MockService)),
+		new(passhash.Item))
 	h.ViewService = view.New("../view", "tmpl")
 	h.Index(w, r)
 
@@ -69,7 +71,8 @@ func TestLoginStoreAuthenticateOK(t *testing.T) {
 	// Call the handler.
 	h := new(controller.LoginHandler)
 	h.UserService = usecase.NewUserCase(
-		repository.NewUserRepo(new(repository.MockService)))
+		repository.NewUserRepo(new(repository.MockService)),
+		new(passhash.Item))
 	h.ViewService = view.New("../view", "tmpl")
 
 	// Create a new user.
@@ -102,7 +105,8 @@ func TestLoginStoreAuthenticateFail(t *testing.T) {
 	// Call the handler.
 	h := new(controller.LoginHandler)
 	h.UserService = usecase.NewUserCase(
-		repository.NewUserRepo(new(repository.MockService)))
+		repository.NewUserRepo(new(repository.MockService)),
+		new(passhash.Item))
 	h.ViewService = view.New("../view", "tmpl")
 
 	// Create a new user.
