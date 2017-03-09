@@ -19,9 +19,15 @@ type User struct {
 	Password  string `json:"password"`
 }
 
-// UserService represents a service for managing users.
-type UserService interface {
+// UserCase represents a service for managing users.
+type UserCase interface {
 	User(email string) (*User, error)
-	CreateUser(user *User) error
-	Authenticate(user *User) error
+	CreateUser(item *User) error
+	Authenticate(item *User) error
+}
+
+// UserRepo represents a service for storage of users.
+type UserRepo interface {
+	FindByEmail(email string) (*User, error)
+	Store(item *User) error
 }

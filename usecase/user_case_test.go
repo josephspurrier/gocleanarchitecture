@@ -1,17 +1,19 @@
-package database_test
+package usecase_test
 
 import (
 	"testing"
 
-	"github.com/josephspurrier/gocleanarchitecture/database"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
+	"github.com/josephspurrier/gocleanarchitecture/lib/passhash"
+	"github.com/josephspurrier/gocleanarchitecture/repository"
+	"github.com/josephspurrier/gocleanarchitecture/usecase"
 )
 
 // TestCreateUser ensures user can be created.
 func TestCreateUser(t *testing.T) {
 	// Test user creation.
-	db := new(database.MockService)
-	s := database.NewUserService(db)
+	s := usecase.NewUserCase(repository.NewUserRepo(new(repository.MockService)),
+		new(passhash.Item))
 	u := new(domain.User)
 	u.Email = "jdoe@example.com"
 	u.Password = "Pa$$w0rd"
@@ -25,7 +27,7 @@ func TestCreateUser(t *testing.T) {
 	// Test user query.
 	uTest, err := s.User("jdoe@example.com")
 	AssertEqual(t, err, nil)
-	AssertEqual(t, uTest.Password, "Pa$$w0rd")
+	AssertEqual(t, uTest.Email, "jdoe@example.com")
 
 	// Test failed user query.
 	_, err = s.User("bademail@example.com")
@@ -35,8 +37,8 @@ func TestCreateUser(t *testing.T) {
 // TestAuthenticate ensures user can authenticate.
 func TestAuthenticate(t *testing.T) {
 	// Test user creation.
-	db := new(database.MockService)
-	s := database.NewUserService(db)
+	s := usecase.NewUserCase(repository.NewUserRepo(new(repository.MockService)),
+		new(passhash.Item))
 	u := new(domain.User)
 	u.Email = "ssmith@example.com"
 	u.Password = "Pa$$w0rd"
@@ -58,11 +60,11 @@ func TestAuthenticate(t *testing.T) {
 	AssertEqual(t, err, domain.ErrUserNotFound)
 }
 
-// TestUserFailures ensures fails properly.
+// TestUserFailures ensures user fails properly.
 func TestUserFailures(t *testing.T) {
 	// Test user creation.
-	db := new(database.MockService)
-	s := database.NewUserService(db)
+	db := new(repository.MockService)
+	s := usecase.NewUserCase(repository.NewUserRepo(db), new(passhash.Item))
 
 	db.WriteFail = true
 	db.ReadFail = true

@@ -10,7 +10,7 @@ import (
 
 // LoginHandler represents the services required for this controller.
 type LoginHandler struct {
-	UserService domain.UserService
+	UserService domain.UserCase
 	ViewService view.Service
 }
 
