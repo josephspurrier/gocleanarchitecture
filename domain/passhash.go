@@ -5,13 +5,12 @@ import (
 )
 
 var (
-	// ErrPasswordHash
+	// ErrPasswordHash is when a password hash operation fails.
 	ErrPasswordHash = errors.New("Password hash failed.")
 )
 
 // Passhash represents a password hashing system.
-type Passhash struct {
-}
+type Passhash struct{}
 
 // PasshashCase represents a service for managing hashed passwords.
 type PasshashCase interface {

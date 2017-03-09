@@ -1,6 +1,6 @@
 package passhash
 
-// Item is an empty struct that allows use of the functions.
+// Item represents a password hashing system.
 type Item struct{}
 
 // Hash returns a hashed string and an error.
