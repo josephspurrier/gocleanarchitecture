@@ -47,4 +47,7 @@ func TestUserRepoFail(t *testing.T) {
 	db.ReadFail = true
 	_, err = s.FindByEmail("jdoe@example.com")
 	AssertNotNil(t, err)
+
+	err = s.Store(u)
+	AssertNotNil(t, err)
 }
