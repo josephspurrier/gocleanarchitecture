@@ -1,16 +1,16 @@
-package database_test
+package repository_test
 
 import (
 	"testing"
 
-	"github.com/josephspurrier/gocleanarchitecture/database"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
+	"github.com/josephspurrier/gocleanarchitecture/repository"
 )
 
 // TestUserRepo tests the user repo.
 func TestUserRepo(t *testing.T) {
-	db := new(database.MockService)
-	s := database.NewUserRepo(db)
+	db := new(repository.MockService)
+	s := repository.NewUserRepo(db)
 
 	_, err := s.FindByEmail("bad@example.com")
 	AssertEqual(t, err, domain.ErrUserNotFound)
@@ -27,8 +27,8 @@ func TestUserRepo(t *testing.T) {
 
 // TestUserRepoFail tests the user repo.
 func TestUserRepoFail(t *testing.T) {
-	db := new(database.MockService)
-	s := database.NewUserRepo(db)
+	db := new(repository.MockService)
+	s := repository.NewUserRepo(db)
 
 	db.WriteFail = true
 	u := new(domain.User)

@@ -10,7 +10,7 @@ import (
 
 // RegisterHandler represents the services required for this controller.
 type RegisterHandler struct {
-	UserService domain.UserService
+	UserService domain.UserCase
 	ViewService view.Service
 }
 

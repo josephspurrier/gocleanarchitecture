@@ -1,15 +1,15 @@
 package boot
 
 import (
-	"github.com/josephspurrier/gocleanarchitecture/database"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
+	"github.com/josephspurrier/gocleanarchitecture/repository"
 	"github.com/josephspurrier/gocleanarchitecture/usecase"
 )
 
 // Service represents all the services that the application uses.
 type Service struct {
-	UserService domain.UserService
+	UserService domain.UserCase
 	ViewService view.Service
 }
 
@@ -19,10 +19,10 @@ func RegisterServices() *Service {
 	s := new(Service)
 
 	// Initialize the clients.
-	db := database.NewClient("db.json")
+	db := repository.NewClient("db.json")
 
 	// Store all the services for the application.
-	s.UserService = usecase.NewUserService(database.NewUserRepo(db))
+	s.UserService = usecase.NewUserCase(repository.NewUserRepo(db))
 	s.ViewService = view.New("../../view", "tmpl")
 
 	return s

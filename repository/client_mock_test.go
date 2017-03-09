@@ -1,16 +1,16 @@
-package database_test
+package repository_test
 
 import (
 	"testing"
 
-	"github.com/josephspurrier/gocleanarchitecture/database"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
+	"github.com/josephspurrier/gocleanarchitecture/repository"
 )
 
 // TestMockService ensures the mock service works correctly.
 func TestMockService(t *testing.T) {
 	// Test the reading and writing.
-	s := new(database.MockService)
+	s := new(repository.MockService)
 
 	// Test forced failures.
 	s.WriteFail = true
