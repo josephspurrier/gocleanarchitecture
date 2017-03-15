@@ -64,6 +64,21 @@ func TestByteString(t *testing.T) {
 	}
 }
 
+// TestByteStringFail tests byte to string hash.
+func TestByteStringFail(t *testing.T) {
+	plainText := []byte("This is a test.")
+
+	hash, err := HashBytes([]byte("Other text."))
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	if MatchString(string(hash), string(plainText)) {
+		t.Error("Password should not match")
+	}
+}
+
 // TestHashStringEmpty tests empty string which should pass fine.
 func TestHashStringEmpty(t *testing.T) {
 	plainText := ""
