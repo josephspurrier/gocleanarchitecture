@@ -1,8 +1,6 @@
 package passhash
 
-import (
-	"testing"
-)
+import "testing"
 
 // TestStringString tests string to string hash.
 func TestStringString(t *testing.T) {
@@ -46,6 +44,21 @@ func TestStringByte(t *testing.T) {
 
 	if !MatchBytes([]byte(hash), []byte(plainText)) {
 		t.Error("Password does not match")
+	}
+}
+
+// TestStringByteFail tests string to byte hash.
+func TestStringByteFail(t *testing.T) {
+	plainText := "This is a test."
+
+	hash, err := HashString("Different text.")
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	if MatchBytes([]byte(hash), []byte(plainText)) {
+		t.Error("Password should not match")
 	}
 }
 

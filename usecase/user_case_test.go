@@ -1,6 +1,7 @@
 package usecase_test
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/josephspurrier/gocleanarchitecture/domain"
@@ -8,6 +9,19 @@ import (
 	"github.com/josephspurrier/gocleanarchitecture/repository"
 	"github.com/josephspurrier/gocleanarchitecture/usecase"
 )
+
+//  BadHasher represents a password hashing system that always fails.
+type BadHasher struct{}
+
+// Hash returns a hashed string and an error.
+func (s *BadHasher) Hash(password string) (string, error) {
+	return "", errors.New("Forced error.")
+}
+
+// Match returns true if the hash matches the password.
+func (s *BadHasher) Match(hash, password string) bool {
+	return false
+}
 
 // TestCreateUser ensures user can be created.
 func TestCreateUser(t *testing.T) {
@@ -87,4 +101,17 @@ func TestUserFailures(t *testing.T) {
 	u.Email = "bfranklin@example.com"
 	err = s.Authenticate(u)
 	AssertNotNil(t, err)
+}
+
+// TestBadHasherFailures ensures user fails properly.
+func TestBadHasherFailures(t *testing.T) {
+	// Test user creation.
+	db := new(repository.MockService)
+	s := usecase.NewUserCase(repository.NewUserRepo(db), new(BadHasher))
+
+	u := new(domain.User)
+	u.Email = "ssmith@example.com"
+	u.Password = "Pa$$w0rd"
+	err := s.CreateUser(u)
+	AssertEqual(t, err, domain.ErrPasswordHash)
 }
