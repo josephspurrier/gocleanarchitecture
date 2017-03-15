@@ -10,7 +10,7 @@ import (
 // main is the entrypoint for the application.
 func main() {
 	// Register the services and load the routes.
-	http.Handle("/", boot.RegisterServices().LoadRoutes())
+	http.Handle("/", boot.ServicesAndRoutes())
 
 	// Display message on the server.
 	log.Println("Server started.")
