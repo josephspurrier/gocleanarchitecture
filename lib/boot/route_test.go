@@ -10,11 +10,8 @@ import (
 
 // TestRoutes ensures each of the routes is set up properly.
 func TestRoutes(t *testing.T) {
-	// Register the services.
-	s := boot.RegisterServices()
-
-	// Load the routes.
-	h := s.LoadRoutes()
+	// Register the services and load the routes.
+	h := boot.ServicesAndRoutes()
 
 	var err error
 	var w *httptest.ResponseRecorder
