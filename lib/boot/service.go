@@ -11,7 +11,7 @@ import (
 // Service represents all the services that the application uses.
 type Service struct {
 	UserService domain.UserCase
-	ViewService view.Service
+	ViewService domain.ViewCase
 }
 
 // RegisterServices sets up each service and returns the container for all

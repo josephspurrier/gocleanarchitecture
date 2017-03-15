@@ -5,13 +5,12 @@ import (
 	"net/http"
 
 	"github.com/josephspurrier/gocleanarchitecture/domain"
-	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
 // LoginHandler represents the services required for this controller.
 type LoginHandler struct {
 	UserService domain.UserCase
-	ViewService view.Service
+	ViewService domain.ViewCase
 }
 
 // Index displays the logon screen.
@@ -28,7 +27,8 @@ func (h *LoginHandler) Index(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.ViewService.SetTemplate("login/index").Render(w, r)
+	h.ViewService.SetTemplate("login/index")
+	h.ViewService.Render(w, r)
 }
 
 // Store handles the submission of the login information.

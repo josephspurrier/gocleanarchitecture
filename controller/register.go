@@ -5,13 +5,12 @@ import (
 	"net/http"
 
 	"github.com/josephspurrier/gocleanarchitecture/domain"
-	"github.com/josephspurrier/gocleanarchitecture/lib/view"
 )
 
 // RegisterHandler represents the services required for this controller.
 type RegisterHandler struct {
 	UserService domain.UserCase
-	ViewService view.Service
+	ViewService domain.ViewCase
 }
 
 // Index displays the register screen.
@@ -21,7 +20,8 @@ func (h *RegisterHandler) Index(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.ViewService.SetTemplate("register/index").Render(w, r)
+	h.ViewService.SetTemplate("register/index")
+	h.ViewService.Render(w, r)
 }
 
 // Store adds a user to the database.

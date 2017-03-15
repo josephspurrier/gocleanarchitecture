@@ -18,7 +18,8 @@ func TestRegisterServices(t *testing.T) {
 	AssertEqual(t, err, domain.ErrUserNotFound)
 
 	// Test the view service.
-	v := s.ViewService.AddVar("foo", "bar").GetVar("foo")
+	s.ViewService.AddVar("foo", "bar")
+	v := s.ViewService.GetVar("foo")
 	AssertEqual(t, v, "bar")
 
 	// Cleanup

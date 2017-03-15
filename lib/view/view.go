@@ -4,31 +4,18 @@ import (
 	"html/template"
 	"net/http"
 	"path"
-)
 
-// Vars maps a string key to a variable.
-type Vars map[string]interface{}
+	"github.com/josephspurrier/gocleanarchitecture/domain"
+)
 
 // Item represents a view template.
 type Item struct {
-	Extension string
-	Folder    string
+	extension string
+	folder    string
 
 	baseTemplate string
 	template     string
-	vars         Vars
-}
-
-// Service represents a service for managing a template.
-type Service interface {
-	Render(w http.ResponseWriter, r *http.Request) error
-	SetBaseTemplate(relativeFilePath string) *Item
-	SetTemplate(relativeFilePath string) *Item
-
-	AddVar(key string, value interface{}) *Item
-	DelVar(key string) *Item
-	GetVar(key string) interface{}
-	SetVars(vars Vars) *Item
+	vars         domain.ViewVars
 }
 
 // New returns a new template.
@@ -36,37 +23,43 @@ func New(folder string, extension string) *Item {
 	v := new(Item)
 
 	// Set the initial values.
-	v.Folder = folder
-	v.Extension = extension
+	v.SetFolder(folder)
+	v.SetExtension(extension)
 	v.SetBaseTemplate("base")
 	v.SetTemplate("default")
-	v.SetVars(Vars{})
+	v.SetVars(domain.ViewVars{})
 
 	return v
+}
+
+// SetFolder sets the folder containing the templates.
+func (v *Item) SetFolder(s string) {
+	v.folder = s
+}
+
+// SetExtension sets the extensions of the templates.
+func (v *Item) SetExtension(s string) {
+	v.extension = s
 }
 
 // SetBaseTemplate sets the base template to render.
-func (v *Item) SetBaseTemplate(s string) *Item {
-	v.baseTemplate = path.Join(v.Folder, s)
-	return v
+func (v *Item) SetBaseTemplate(s string) {
+	v.baseTemplate = path.Join(v.folder, s)
 }
 
 // SetTemplate sets the template to render.
-func (v *Item) SetTemplate(s string) *Item {
-	v.template = path.Join(v.Folder, s)
-	return v
+func (v *Item) SetTemplate(s string) {
+	v.template = path.Join(v.folder, s)
 }
 
 // AddVar adds a variable to the template variable map.
-func (v *Item) AddVar(key string, value interface{}) *Item {
+func (v *Item) AddVar(key string, value interface{}) {
 	v.vars[key] = value
-	return v
 }
 
 // DelVar removes a variable from the template variable map.
-func (v *Item) DelVar(key string) *Item {
+func (v *Item) DelVar(key string) {
 	delete(v.vars, key)
-	return v
 }
 
 // GetVar returns a value from the template variable map.
@@ -79,16 +72,15 @@ func (v *Item) GetVar(key string) interface{} {
 }
 
 // SetVars sets the template variable map.
-func (v *Item) SetVars(vars Vars) *Item {
+func (v *Item) SetVars(vars domain.ViewVars) {
 	v.vars = vars
-	return v
 }
 
 // Render outputs the template to the ResponseWriter.
 func (v *Item) Render(w http.ResponseWriter, r *http.Request) error {
 	// Determine if there is an error in the template syntax.
-	tc, err := template.ParseFiles(v.baseTemplate+"."+v.Extension,
-		v.template+"."+v.Extension)
+	tc, err := template.ParseFiles(v.baseTemplate+"."+v.extension,
+		v.template+"."+v.extension)
 	if err != nil {
 		http.Error(w, "Template Parse Error: "+err.Error(), http.StatusInternalServerError)
 		return err
