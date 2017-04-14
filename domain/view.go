@@ -5,8 +5,8 @@ import "net/http"
 // ViewVars maps a string key to a variable.
 type ViewVars map[string]interface{}
 
-// ViewCase represents a service for managing templates.
-type ViewCase interface {
+// IViewService is the interface for HTML templates.
+type IViewService interface {
 	Render(w http.ResponseWriter, r *http.Request) error
 	SetFolder(relativeFolderPath string)
 	SetExtension(fileExtension string)

@@ -1,17 +1,15 @@
-package repository
+package jsondb
 
 import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
 	"sync"
-
-	"github.com/josephspurrier/gocleanarchitecture/domain"
 )
 
 // Schema represents the database structure.
 type Schema struct {
-	Records []domain.User
+	Records []interface{}
 }
 
 // Client represents a client to the data store.
@@ -21,14 +19,6 @@ type Client struct {
 
 	data  *Schema
 	mutex sync.RWMutex
-}
-
-// Service represents a service for interacting with the database.
-type Service interface {
-	Read() error
-	Write() error
-	Records() []domain.User
-	AddRecord(domain.User)
 }
 
 // NewClient returns a new database client.
@@ -95,11 +85,11 @@ func (c *Client) Write() error {
 }
 
 // AddRecord adds a record to the database.
-func (c *Client) AddRecord(rec domain.User) {
+func (c *Client) AddRecord(rec interface{}) {
 	c.data.Records = append(c.data.Records, rec)
 }
 
 // Records retrieves all records from the database.
-func (c *Client) Records() []domain.User {
+func (c *Client) Records() []interface{} {
 	return c.data.Records
 }

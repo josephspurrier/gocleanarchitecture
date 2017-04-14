@@ -20,18 +20,11 @@ func (w *BadResponseWriter) Header() http.Header {
 // Write always returns 0 and an error.
 func (w *BadResponseWriter) Write(p []byte) (int, error) {
 	w.Failed = true
-	return 0, errors.New("Writer failure.")
+	return 0, errors.New("writer failure")
 }
 
 // WriteHeader does nothing.
 func (w *BadResponseWriter) WriteHeader(i int) {
-}
-
-// AssertEqual throws an error if the two values are not equal.
-func AssertEqual(t *testing.T, actualValue interface{}, expectedValue interface{}) {
-	if actualValue != expectedValue {
-		t.Errorf("\n got: %v\nwant: %v", actualValue, expectedValue)
-	}
 }
 
 // TestVar ensures the var functions work properly.
@@ -59,7 +52,8 @@ func TestRenderFail(t *testing.T) {
 	}
 
 	// Fail on template parse error.
-	v.Render(w, r)
+	err = v.Render(w, r)
+	AssertNotNil(t, err)
 	AssertEqual(t, w.Code, http.StatusInternalServerError)
 }
 
@@ -76,6 +70,7 @@ func TestRenderExecuteFail(t *testing.T) {
 	}
 
 	// Fail on file parse error.
-	v.Render(br, r)
+	err = v.Render(br, r)
+	AssertNotNil(t, err)
 	AssertEqual(t, br.Failed, true)
 }

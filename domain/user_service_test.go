@@ -1,13 +1,13 @@
-package usecase_test
+package domain_test
 
 import (
 	"errors"
 	"testing"
 
+	"github.com/josephspurrier/gocleanarchitecture/adapter/passhash"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
-	"github.com/josephspurrier/gocleanarchitecture/lib/passhash"
-	"github.com/josephspurrier/gocleanarchitecture/repository"
-	"github.com/josephspurrier/gocleanarchitecture/usecase"
+	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
+	"github.com/josephspurrier/gocleanarchitecture/repo"
 )
 
 //  BadHasher represents a password hashing system that always fails.
@@ -23,40 +23,47 @@ func (s *BadHasher) Match(hash, password string) bool {
 	return false
 }
 
+// setup handles the creation of the service.
+func setup() *domain.UserService {
+	return domain.NewUserService(
+		repo.NewUserRepo(new(jsondb.MockService)),
+		new(passhash.Item))
+}
+
 // TestCreateUser ensures user can be created.
 func TestCreateUser(t *testing.T) {
 	// Test user creation.
-	s := usecase.NewUserCase(repository.NewUserRepo(new(repository.MockService)),
-		new(passhash.Item))
+	s := setup()
+
 	u := new(domain.User)
 	u.Email = "jdoe@example.com"
 	u.Password = "Pa$$w0rd"
-	err := s.CreateUser(u)
+	err := s.Create(u)
 	AssertEqual(t, err, nil)
 
 	// Test user creation fail.
-	err = s.CreateUser(u)
+	err = s.Create(u)
 	AssertEqual(t, err, domain.ErrUserAlreadyExist)
 
 	// Test user query.
-	uTest, err := s.User("jdoe@example.com")
+	uTest, err := s.ByEmail("jdoe@example.com")
 	AssertEqual(t, err, nil)
 	AssertEqual(t, uTest.Email, "jdoe@example.com")
 
 	// Test failed user query.
-	_, err = s.User("bademail@example.com")
+	_, err = s.ByEmail("bademail@example.com")
 	AssertEqual(t, err, domain.ErrUserNotFound)
 }
 
 // TestAuthenticate ensures user can authenticate.
 func TestAuthenticate(t *testing.T) {
 	// Test user creation.
-	s := usecase.NewUserCase(repository.NewUserRepo(new(repository.MockService)),
-		new(passhash.Item))
+	s := setup()
+
 	u := new(domain.User)
 	u.Email = "ssmith@example.com"
 	u.Password = "Pa$$w0rd"
-	err := s.CreateUser(u)
+	err := s.Create(u)
 	AssertEqual(t, err, nil)
 
 	// Test user authentication.
@@ -77,8 +84,8 @@ func TestAuthenticate(t *testing.T) {
 // TestUserFailures ensures user fails properly.
 func TestUserFailures(t *testing.T) {
 	// Test user creation.
-	db := new(repository.MockService)
-	s := usecase.NewUserCase(repository.NewUserRepo(db), new(passhash.Item))
+	db := new(jsondb.MockService)
+	s := domain.NewUserService(repo.NewUserRepo(db), new(passhash.Item))
 
 	db.WriteFail = true
 	db.ReadFail = true
@@ -86,7 +93,7 @@ func TestUserFailures(t *testing.T) {
 	u := new(domain.User)
 	u.Email = "ssmith@example.com"
 	u.Password = "Pa$$w0rd"
-	err := s.CreateUser(u)
+	err := s.Create(u)
 	AssertNotNil(t, err)
 
 	// Test user authentication.
@@ -94,7 +101,7 @@ func TestUserFailures(t *testing.T) {
 	AssertNotNil(t, err)
 
 	// Test failed user query.
-	_, err = s.User("favalon@example.com")
+	_, err = s.ByEmail("favalon@example.com")
 	AssertNotNil(t, err)
 
 	// Test failed user authentication.
@@ -106,12 +113,12 @@ func TestUserFailures(t *testing.T) {
 // TestBadHasherFailures ensures user fails properly.
 func TestBadHasherFailures(t *testing.T) {
 	// Test user creation.
-	db := new(repository.MockService)
-	s := usecase.NewUserCase(repository.NewUserRepo(db), new(BadHasher))
+	db := new(jsondb.MockService)
+	s := domain.NewUserService(repo.NewUserRepo(db), new(BadHasher))
 
 	u := new(domain.User)
 	u.Email = "ssmith@example.com"
 	u.Password = "Pa$$w0rd"
-	err := s.CreateUser(u)
+	err := s.Create(u)
 	AssertEqual(t, err, domain.ErrPasswordHash)
 }

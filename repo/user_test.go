@@ -1,18 +1,19 @@
-package repository_test
+package repo_test
 
 import (
 	"testing"
 
 	"github.com/josephspurrier/gocleanarchitecture/domain"
-	"github.com/josephspurrier/gocleanarchitecture/repository"
+	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
+	"github.com/josephspurrier/gocleanarchitecture/repo"
 )
 
 // TestUserRepo tests the user repo.
 func TestUserRepo(t *testing.T) {
-	db := new(repository.MockService)
-	s := repository.NewUserRepo(db)
+	db := new(jsondb.MockService)
+	s := repo.NewUserRepo(db)
 
-	_, err := s.FindByEmail("bad@example.com")
+	_, err := s.ByEmail("bad@example.com")
 	AssertEqual(t, err, domain.ErrUserNotFound)
 
 	u := new(domain.User)
@@ -21,14 +22,14 @@ func TestUserRepo(t *testing.T) {
 	err = s.Store(u)
 	AssertEqual(t, err, nil)
 
-	_, err = s.FindByEmail("jdoe@example.com")
+	_, err = s.ByEmail("jdoe@example.com")
 	AssertEqual(t, err, nil)
 }
 
 // TestUserRepoFail tests the user repo.
 func TestUserRepoFail(t *testing.T) {
-	db := new(repository.MockService)
-	s := repository.NewUserRepo(db)
+	db := new(jsondb.MockService)
+	s := repo.NewUserRepo(db)
 
 	db.WriteFail = true
 	u := new(domain.User)
@@ -41,11 +42,11 @@ func TestUserRepoFail(t *testing.T) {
 	err = s.Store(u)
 	AssertEqual(t, err, nil)
 
-	_, err = s.FindByEmail("jdoe@example.com")
+	_, err = s.ByEmail("jdoe@example.com")
 	AssertEqual(t, err, nil)
 
 	db.ReadFail = true
-	_, err = s.FindByEmail("jdoe@example.com")
+	_, err = s.ByEmail("jdoe@example.com")
 	AssertNotNil(t, err)
 
 	err = s.Store(u)

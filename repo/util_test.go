@@ -1,4 +1,4 @@
-package usecase_test
+package repo_test
 
 import "testing"
 

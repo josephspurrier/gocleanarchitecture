@@ -5,13 +5,13 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/josephspurrier/gocleanarchitecture/lib/boot"
+	"github.com/josephspurrier/gocleanarchitecture/cmd/webapp/boot"
 )
 
 // TestRoutes ensures each of the routes is set up properly.
 func TestRoutes(t *testing.T) {
 	// Register the services and load the routes.
-	h := boot.ServicesAndRoutes()
+	h := boot.ServicesAndRoutes("../html")
 
 	var err error
 	var w *httptest.ResponseRecorder

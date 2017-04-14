@@ -1,4 +1,4 @@
-package repository_test
+package jsondb
 
 import (
 	"io/ioutil"
@@ -6,12 +6,11 @@ import (
 	"testing"
 
 	"github.com/josephspurrier/gocleanarchitecture/domain"
-	"github.com/josephspurrier/gocleanarchitecture/repository"
 )
 
 // TestClient ensures the client works properly.
 func TestClient(t *testing.T) {
-	c := repository.NewClient("db.json")
+	c := NewClient("db.json")
 
 	// Check the output.
 	AssertEqual(t, c.Path, "db.json")
@@ -27,12 +26,15 @@ func TestClient(t *testing.T) {
 	AssertEqual(t, len(c.Records()), 1)
 
 	// Cleanup
-	os.Remove("db.json")
+	err := os.Remove("db.json")
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 // TestClient ensures the client fails properly.
 func TestClientFail(t *testing.T) {
-	c := repository.NewClient("")
+	c := NewClient("")
 
 	// Check the output.
 	AssertEqual(t, c.Path, "")
@@ -42,14 +44,20 @@ func TestClientFail(t *testing.T) {
 
 // TestClientFailOpen ensures the client fails properly.
 func TestClientFailOpen(t *testing.T) {
-	c := repository.NewClient("dbbad.json")
+	c := NewClient("dbbad.json")
 
 	// Write a bad file.
-	ioutil.WriteFile("dbbad.json", []byte("{"), 0644)
+	err := ioutil.WriteFile("dbbad.json", []byte("{"), 0644)
+	if err != nil {
+		t.Error(err)
+	}
 
 	// Check the output.
 	AssertNotNil(t, c.Read())
 
 	// Cleanup
-	os.Remove("dbbad.json")
+	err = os.Remove("dbbad.json")
+	if err != nil {
+		t.Error(err)
+	}
 }

@@ -1,32 +1,32 @@
 package boot
 
 import (
+	"github.com/josephspurrier/gocleanarchitecture/adapter/passhash"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
-	"github.com/josephspurrier/gocleanarchitecture/lib/passhash"
+	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
-	"github.com/josephspurrier/gocleanarchitecture/repository"
-	"github.com/josephspurrier/gocleanarchitecture/usecase"
+	"github.com/josephspurrier/gocleanarchitecture/repo"
 )
 
 // Service represents all the services that the application uses.
 type Service struct {
-	UserService domain.UserCase
-	ViewService domain.ViewCase
+	User domain.IUserService
+	View domain.IViewService
 }
 
 // RegisterServices sets up each service and returns the container for all
 // the services.
-func RegisterServices() *Service {
+func RegisterServices(templateFolder string) *Service {
 	s := new(Service)
 
 	// Initialize the clients.
-	db := repository.NewClient("db.json")
+	db := jsondb.NewClient("db.json")
 
 	// Store all the services for the application.
-	s.UserService = usecase.NewUserCase(
-		repository.NewUserRepo(db),
+	s.User = domain.NewUserService(
+		repo.NewUserRepo(db),
 		new(passhash.Item))
-	s.ViewService = view.New("../../view", "tmpl")
+	s.View = view.New(templateFolder, "tmpl")
 
 	return s
 }

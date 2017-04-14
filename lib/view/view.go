@@ -3,7 +3,7 @@ package view
 import (
 	"html/template"
 	"net/http"
-	"path"
+	"path/filepath"
 
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 )
@@ -44,12 +44,12 @@ func (v *Item) SetExtension(s string) {
 
 // SetBaseTemplate sets the base template to render.
 func (v *Item) SetBaseTemplate(s string) {
-	v.baseTemplate = path.Join(v.folder, s)
+	v.baseTemplate = filepath.Join(v.folder, s)
 }
 
 // SetTemplate sets the template to render.
 func (v *Item) SetTemplate(s string) {
-	v.template = path.Join(v.folder, s)
+	v.template = filepath.Join(v.folder, s)
 }
 
 // AddVar adds a variable to the template variable map.

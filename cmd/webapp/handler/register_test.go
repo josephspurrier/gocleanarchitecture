@@ -1,4 +1,4 @@
-package controller_test
+package handler_test
 
 import (
 	"net/http"
@@ -6,11 +6,12 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/josephspurrier/gocleanarchitecture/controller"
-	"github.com/josephspurrier/gocleanarchitecture/lib/passhash"
+	"github.com/josephspurrier/gocleanarchitecture/adapter/passhash"
+	"github.com/josephspurrier/gocleanarchitecture/cmd/webapp/handler"
+	"github.com/josephspurrier/gocleanarchitecture/domain"
+	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
-	"github.com/josephspurrier/gocleanarchitecture/repository"
-	"github.com/josephspurrier/gocleanarchitecture/usecase"
+	"github.com/josephspurrier/gocleanarchitecture/repo"
 )
 
 // TestRegisterIndex ensures the index function returns a 200 code.
@@ -23,8 +24,8 @@ func TestRegisterIndex(t *testing.T) {
 	}
 
 	// Call the handler.
-	h := new(controller.RegisterHandler)
-	h.ViewService = view.New("../view", "tmpl")
+	h := new(handler.Register)
+	h.View = view.New("../html", "tmpl")
 	h.Index(w, r)
 
 	// Check the output.
@@ -49,11 +50,11 @@ func TestRegisterStoreCreateOK(t *testing.T) {
 	r.Form.Add("password", "Pa$$w0rd")
 
 	// Call the handler.
-	h := new(controller.RegisterHandler)
-	h.UserService = usecase.NewUserCase(
-		repository.NewUserRepo(new(repository.MockService)),
+	h := new(handler.Register)
+	h.User = domain.NewUserService(
+		repo.NewUserRepo(new(jsondb.MockService)),
 		new(passhash.Item))
-	h.ViewService = view.New("../view", "tmpl")
+	h.View = view.New("../view", "tmpl")
 	h.Index(w, r)
 
 	// Check the output.
@@ -75,11 +76,11 @@ func TestRegisterStoreCreateNoFieldFail(t *testing.T) {
 	}
 
 	// Call the handler.
-	h := new(controller.RegisterHandler)
-	h.UserService = usecase.NewUserCase(
-		repository.NewUserRepo(new(repository.MockService)),
+	h := new(handler.Register)
+	h.User = domain.NewUserService(
+		repo.NewUserRepo(new(jsondb.MockService)),
 		new(passhash.Item))
-	h.ViewService = view.New("../view", "tmpl")
+	h.View = view.New("../view", "tmpl")
 	h.Index(w, r)
 
 	// Check the output.
@@ -105,11 +106,11 @@ func TestRegisterStoreCreateOneMissingFieldFail(t *testing.T) {
 	r.Form.Add("password", "Pa$$w0rd")
 
 	// Call the handler.
-	h := new(controller.RegisterHandler)
-	h.UserService = usecase.NewUserCase(
-		repository.NewUserRepo(new(repository.MockService)),
+	h := new(handler.Register)
+	h.User = domain.NewUserService(
+		repo.NewUserRepo(new(jsondb.MockService)),
 		new(passhash.Item))
-	h.ViewService = view.New("../view", "tmpl")
+	h.View = view.New("../view", "tmpl")
 	h.Index(w, r)
 
 	// Check the output.

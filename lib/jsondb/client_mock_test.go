@@ -1,16 +1,15 @@
-package repository_test
+package jsondb
 
 import (
 	"testing"
 
 	"github.com/josephspurrier/gocleanarchitecture/domain"
-	"github.com/josephspurrier/gocleanarchitecture/repository"
 )
 
 // TestMockService ensures the mock service works correctly.
 func TestMockService(t *testing.T) {
 	// Test the reading and writing.
-	s := new(repository.MockService)
+	s := new(MockService)
 
 	// Test forced failures.
 	s.WriteFail = true

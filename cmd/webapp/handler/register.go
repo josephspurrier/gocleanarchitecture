@@ -1,4 +1,4 @@
-package controller
+package handler
 
 import (
 	"fmt"
@@ -7,25 +7,25 @@ import (
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 )
 
-// RegisterHandler represents the services required for this controller.
-type RegisterHandler struct {
-	UserService domain.UserCase
-	ViewService domain.ViewCase
+// Register represents the services required for this controller.
+type Register struct {
+	User domain.IUserService
+	View domain.IViewService
 }
 
 // Index displays the register screen.
-func (h *RegisterHandler) Index(w http.ResponseWriter, r *http.Request) {
+func (h *Register) Index(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		h.Store(w, r)
 		return
 	}
 
-	h.ViewService.SetTemplate("register/index")
-	h.ViewService.Render(w, r)
+	h.View.SetTemplate("register/index")
+	h.View.Render(w, r)
 }
 
 // Store adds a user to the database.
-func (h *RegisterHandler) Store(w http.ResponseWriter, r *http.Request) {
+func (h *Register) Store(w http.ResponseWriter, r *http.Request) {
 	// Don't continue if required fields are missing.
 	for _, v := range []string{"firstname", "lastname", "email", "password"} {
 		if len(r.FormValue(v)) == 0 {
@@ -44,7 +44,7 @@ func (h *RegisterHandler) Store(w http.ResponseWriter, r *http.Request) {
 	u.Password = r.FormValue("password")
 
 	// Add the user to the database.
-	err := h.UserService.CreateUser(u)
+	err := h.User.Create(u)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, err)
