@@ -1,3 +1,4 @@
 .DS_Store
 db.json
 *.exe
+cmd/webapp/webapp

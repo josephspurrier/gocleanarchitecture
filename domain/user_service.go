@@ -9,18 +9,18 @@ type IUserService interface {
 
 // UserService implements the service for users.
 type UserService struct {
-	repo UserRepo  // Storage.
+	repo IUserRepo // Storage.
 	hash IPasshash // Password hashing.
 }
 
-// UserRepo represents the service for storage of users.
-type UserRepo interface {
+// IUserRepo represents the service for storage of users.
+type IUserRepo interface {
 	ByEmail(email string) (*User, error)
 	Store(item *User) error
 }
 
 // NewUserService returns the service for managing users.
-func NewUserService(repo UserRepo, hash IPasshash) *UserService {
+func NewUserService(repo IUserRepo, hash IPasshash) *UserService {
 	s := new(UserService)
 	s.repo = repo
 	s.hash = hash
