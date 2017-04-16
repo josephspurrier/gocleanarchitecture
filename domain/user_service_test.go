@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	"github.com/josephspurrier/gocleanarchitecture/adapter/passhash"
+	"github.com/josephspurrier/gocleanarchitecture/adapter/repo"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
-	"github.com/josephspurrier/gocleanarchitecture/repo"
 )
 
 //  BadHasher represents a password hashing system that always fails.

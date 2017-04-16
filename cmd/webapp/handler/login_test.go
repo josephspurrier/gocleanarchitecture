@@ -7,11 +7,11 @@ import (
 	"testing"
 
 	"github.com/josephspurrier/gocleanarchitecture/adapter/passhash"
+	"github.com/josephspurrier/gocleanarchitecture/adapter/repo"
 	"github.com/josephspurrier/gocleanarchitecture/cmd/webapp/handler"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
-	"github.com/josephspurrier/gocleanarchitecture/repo"
 )
 
 // TestLoginIndex ensures the index function returns a 200 code.

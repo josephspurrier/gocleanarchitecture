@@ -3,9 +3,9 @@ package repo_test
 import (
 	"testing"
 
+	"github.com/josephspurrier/gocleanarchitecture/adapter/repo"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
-	"github.com/josephspurrier/gocleanarchitecture/repo"
 )
 
 // TestUserRepo tests the user repo.
