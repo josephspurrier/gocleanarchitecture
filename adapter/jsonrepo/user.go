@@ -8,8 +8,8 @@ import (
 
 // IRepoService is the interface for storage.
 type IRepoService interface {
-	Records(string) ([]interface{}, error)
-	AddRecord(string, interface{}) error
+	Records(recordType string) ([]interface{}, error)
+	AddRecord(recordType string, record interface{}) error
 }
 
 // UserService implements the service for storage of users.
