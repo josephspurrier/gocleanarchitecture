@@ -16,7 +16,7 @@ type Item struct {
 	listMutex sync.RWMutex
 }
 
-// Instance returns the router.
+// New returns a new instance of the router.
 func New() *Item {
 	s := new(Item)
 	s.r = vestigo.NewRouter()
