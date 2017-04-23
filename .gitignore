@@ -1,4 +1,10 @@
+# OS files
 .DS_Store
-db.json
+thumbs.db
+
+# Database files
+cmd/webapp/jsondb/*.json
+
+# Compiled files
 *.exe
 cmd/webapp/webapp
