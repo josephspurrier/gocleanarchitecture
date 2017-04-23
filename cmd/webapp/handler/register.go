@@ -15,11 +15,6 @@ type Register struct {
 
 // Index displays the register screen.
 func (h *Register) Index(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "POST" {
-		h.Store(w, r)
-		return
-	}
-
 	h.View.SetTemplate("register/index")
 	h.View.Render(w, r)
 }

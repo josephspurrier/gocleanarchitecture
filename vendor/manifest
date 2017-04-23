@@ -2,6 +2,22 @@
 	"version": 0,
 	"dependencies": [
 		{
+			"importpath": "github.com/husobee/vestigo",
+			"repository": "https://github.com/husobee/vestigo",
+			"vcs": "git",
+			"revision": "23d011ed4e5ec0f73678c48df5ca8b7ace92f8d0",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/justinas/alice",
+			"repository": "https://github.com/justinas/alice",
+			"vcs": "git",
+			"revision": "1051eaf52fcafdd87ead59d28b065f1fcb8274ec",
+			"branch": "master",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/mitchellh/mapstructure",
 			"repository": "https://github.com/mitchellh/mapstructure",
 			"vcs": "git",

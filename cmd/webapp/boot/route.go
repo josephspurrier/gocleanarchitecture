@@ -1,26 +1,35 @@
 package boot
 
 import (
+	"fmt"
 	"net/http"
 
+	"github.com/josephspurrier/gocleanarchitecture/cmd/webapp/adapter"
 	"github.com/josephspurrier/gocleanarchitecture/cmd/webapp/handler"
+	"github.com/josephspurrier/gocleanarchitecture/lib/router"
 )
 
 // LoadRoutes returns a handler with all the routes.
 func (s *Service) LoadRoutes() http.Handler {
-	// Create the mux.
-	h := http.NewServeMux()
+	// Create the router.
+	h := router.New()
+
+	// Set the 404 page.
+	h.SetNotFound(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprint(w, "404 Page Not Found")
+	})
 
 	// Register the pages.
-	s.AddLogin(h)
-	s.AddRegister(h)
+	s.addLogin(h)
+	s.addRegister(h)
 
 	// Return the handler.
-	return h
+	return h.Router()
 }
 
-// AddLogin registers the login handlers.
-func (s *Service) AddLogin(mux *http.ServeMux) {
+// addLogin registers the login handlers.
+func (s *Service) addLogin(r adapter.IRouterService) {
 	// Create handler.
 	h := new(handler.Login)
 
@@ -29,11 +38,12 @@ func (s *Service) AddLogin(mux *http.ServeMux) {
 	h.View = s.View
 
 	// Load routes.
-	mux.HandleFunc("/", h.Index)
+	r.Get("/", h.Index)
+	r.Post("/", h.Store)
 }
 
-// AddRegister registers the register handlers.
-func (s *Service) AddRegister(mux *http.ServeMux) {
+// addRegister registers the register handlers.
+func (s *Service) addRegister(r adapter.IRouterService) {
 	// Create handler.
 	h := new(handler.Register)
 
@@ -42,5 +52,6 @@ func (s *Service) AddRegister(mux *http.ServeMux) {
 	h.View = s.View
 
 	// Load routes.
-	mux.HandleFunc("/register", h.Index)
+	r.Get("/register", h.Index)
+	r.Post("/register", h.Store)
 }

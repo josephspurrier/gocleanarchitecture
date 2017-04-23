@@ -57,14 +57,14 @@ func TestRegisterStoreCreateOK(t *testing.T) {
 		jsonrepo.NewUserRepo(new(jsondb.MockService)),
 		new(passhash.Item))
 	h.View = view.New("../view", "tmpl")
-	h.Index(w, r)
+	h.Store(w, r)
 
 	// Check the output.
 	assert.Equal(t, w.Code, http.StatusCreated)
 
 	// Fail on duplicate creation.
 	w = httptest.NewRecorder()
-	h.Index(w, r)
+	h.Store(w, r)
 	assert.Equal(t, w.Code, http.StatusInternalServerError)
 }
 
@@ -83,7 +83,7 @@ func TestRegisterStoreCreateNoFieldFail(t *testing.T) {
 		jsonrepo.NewUserRepo(new(jsondb.MockService)),
 		new(passhash.Item))
 	h.View = view.New("../view", "tmpl")
-	h.Index(w, r)
+	h.Store(w, r)
 
 	// Check the output.
 	assert.Equal(t, w.Code, http.StatusBadRequest)
@@ -113,7 +113,7 @@ func TestRegisterStoreCreateOneMissingFieldFail(t *testing.T) {
 		jsonrepo.NewUserRepo(new(jsondb.MockService)),
 		new(passhash.Item))
 	h.View = view.New("../view", "tmpl")
-	h.Index(w, r)
+	h.Store(w, r)
 
 	// Check the output.
 	assert.Equal(t, w.Code, http.StatusBadRequest)

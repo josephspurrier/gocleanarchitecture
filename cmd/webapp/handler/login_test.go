@@ -49,7 +49,7 @@ func TestLoginStoreMissingRequiredFields(t *testing.T) {
 		jsonrepo.NewUserRepo(new(jsondb.MockService)),
 		new(passhash.Item))
 	h.View = view.New("../html", "tmpl")
-	h.Index(w, r)
+	h.Store(w, r)
 
 	// Check the output.
 	assert.Equal(t, w.Code, http.StatusBadRequest)
@@ -123,7 +123,7 @@ func TestLoginStoreAuthenticateFail(t *testing.T) {
 		t.Error(err)
 	}
 
-	h.Index(w, r)
+	h.Store(w, r)
 
 	// Check the output.
 	assert.Equal(t, w.Code, http.StatusUnauthorized)
