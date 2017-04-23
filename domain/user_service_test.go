@@ -8,6 +8,8 @@ import (
 	"github.com/josephspurrier/gocleanarchitecture/adapter/passhash"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
+
+	"github.com/stretchr/testify/assert"
 )
 
 //  BadHasher represents a password hashing system that always fails.
@@ -39,20 +41,20 @@ func TestCreateUser(t *testing.T) {
 	u.Email = "jdoe@example.com"
 	u.Password = "Pa$$w0rd"
 	err := s.Create(u)
-	AssertEqual(t, err, nil)
+	assert.Equal(t, err, nil)
 
 	// Test user creation fail.
 	err = s.Create(u)
-	AssertEqual(t, err, domain.ErrUserAlreadyExist)
+	assert.Equal(t, err, domain.ErrUserAlreadyExist)
 
 	// Test user query.
 	uTest, err := s.ByEmail("jdoe@example.com")
-	AssertEqual(t, err, nil)
-	AssertEqual(t, uTest.Email, "jdoe@example.com")
+	assert.Equal(t, err, nil)
+	assert.Equal(t, uTest.Email, "jdoe@example.com")
 
 	// Test failed user query.
 	_, err = s.ByEmail("bademail@example.com")
-	AssertEqual(t, err, domain.ErrUserNotFound)
+	assert.Equal(t, err, domain.ErrUserNotFound)
 }
 
 // TestAuthenticate ensures user can authenticate.
@@ -64,21 +66,21 @@ func TestAuthenticate(t *testing.T) {
 	u.Email = "ssmith@example.com"
 	u.Password = "Pa$$w0rd"
 	err := s.Create(u)
-	AssertEqual(t, err, nil)
+	assert.Equal(t, err, nil)
 
 	// Test user authentication.
 	err = s.Authenticate(u)
-	AssertEqual(t, err, nil)
+	assert.Equal(t, err, nil)
 
 	// Test failed user authentication.
 	u.Password = "BadPa$$w0rd"
 	err = s.Authenticate(u)
-	AssertEqual(t, err, domain.ErrUserPasswordNotMatch)
+	assert.Equal(t, err, domain.ErrUserPasswordNotMatch)
 
 	// Test failed user authentication.
 	u.Email = "bfranklin@example.com"
 	err = s.Authenticate(u)
-	AssertEqual(t, err, domain.ErrUserNotFound)
+	assert.Equal(t, err, domain.ErrUserNotFound)
 }
 
 // TestUserFailures ensures user fails properly.
@@ -94,20 +96,20 @@ func TestUserFailures(t *testing.T) {
 	u.Email = "ssmith@example.com"
 	u.Password = "Pa$$w0rd"
 	err := s.Create(u)
-	AssertNotNil(t, err)
+	assert.NotNil(t, err)
 
 	// Test user authentication.
 	err = s.Authenticate(u)
-	AssertNotNil(t, err)
+	assert.NotNil(t, err)
 
 	// Test failed user query.
 	_, err = s.ByEmail("favalon@example.com")
-	AssertNotNil(t, err)
+	assert.NotNil(t, err)
 
 	// Test failed user authentication.
 	u.Email = "bfranklin@example.com"
 	err = s.Authenticate(u)
-	AssertNotNil(t, err)
+	assert.NotNil(t, err)
 }
 
 // TestBadHasherFailures ensures user fails properly.
@@ -120,5 +122,5 @@ func TestBadHasherFailures(t *testing.T) {
 	u.Email = "ssmith@example.com"
 	u.Password = "Pa$$w0rd"
 	err := s.Create(u)
-	AssertEqual(t, err, domain.ErrPasswordHash)
+	assert.Equal(t, err, domain.ErrPasswordHash)
 }

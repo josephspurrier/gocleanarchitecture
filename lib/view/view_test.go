@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // BadResponseWriter represents a http.ResponseWriter that always fails.
@@ -32,11 +34,11 @@ func TestVar(t *testing.T) {
 	// Test adding and retrieving a variable.
 	v := New("", "")
 	v.AddVar("foo", "bar")
-	AssertEqual(t, v.GetVar("foo"), "bar")
+	assert.Equal(t, v.GetVar("foo"), "bar")
 
 	// Test deleting a variable.
 	v.DelVar("foo")
-	AssertEqual(t, v.GetVar("foo"), nil)
+	assert.Equal(t, v.GetVar("foo"), nil)
 }
 
 // TestRenderFail ensures render fails properly.
@@ -53,8 +55,8 @@ func TestRenderFail(t *testing.T) {
 
 	// Fail on template parse error.
 	err = v.Render(w, r)
-	AssertNotNil(t, err)
-	AssertEqual(t, w.Code, http.StatusInternalServerError)
+	assert.NotNil(t, err)
+	assert.Equal(t, w.Code, http.StatusInternalServerError)
 }
 
 // TestRenderExecuteFail ensures render fails properly.
@@ -71,6 +73,6 @@ func TestRenderExecuteFail(t *testing.T) {
 
 	// Fail on file parse error.
 	err = v.Render(br, r)
-	AssertNotNil(t, err)
-	AssertEqual(t, br.Failed, true)
+	assert.NotNil(t, err)
+	assert.Equal(t, br.Failed, true)
 }

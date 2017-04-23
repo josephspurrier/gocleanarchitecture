@@ -6,6 +6,8 @@ import (
 	"testing"
 
 	"github.com/josephspurrier/gocleanarchitecture/domain"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // TestClient ensures the client works properly.
@@ -13,10 +15,10 @@ func TestClient(t *testing.T) {
 	c := NewClient("db.json")
 
 	// Check the output.
-	AssertEqual(t, c.Path, "db.json")
-	AssertEqual(t, c.write(), nil)
-	AssertEqual(t, c.read(), nil)
-	AssertEqual(t, c.write(), nil)
+	assert.Equal(t, c.Path, "db.json")
+	assert.Equal(t, c.write(), nil)
+	assert.Equal(t, c.read(), nil)
+	assert.Equal(t, c.write(), nil)
 
 	// Test adding a record and reading it.
 	u := new(domain.User)
@@ -24,8 +26,8 @@ func TestClient(t *testing.T) {
 	u.Password = "Pa$$w0rd"
 	c.AddRecord(*u)
 	records, err := c.Records()
-	AssertEqual(t, len(records), 1)
-	AssertEqual(t, err, nil)
+	assert.Equal(t, len(records), 1)
+	assert.Equal(t, err, nil)
 
 	// Cleanup
 	err = os.Remove("db.json")
@@ -39,9 +41,9 @@ func TestClientFail(t *testing.T) {
 	c := NewClient("")
 
 	// Check the output.
-	AssertEqual(t, c.Path, "")
-	AssertNotNil(t, c.write())
-	AssertNotNil(t, c.read())
+	assert.Equal(t, c.Path, "")
+	assert.NotNil(t, c.write())
+	assert.NotNil(t, c.read())
 }
 
 // TestClientFailOpen ensures the client fails properly.
@@ -55,7 +57,7 @@ func TestClientFailOpen(t *testing.T) {
 	}
 
 	// Check the output.
-	AssertNotNil(t, c.read())
+	assert.NotNil(t, c.read())
 
 	// Cleanup
 	err = os.Remove("dbbad.json")

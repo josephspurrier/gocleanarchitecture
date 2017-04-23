@@ -4,6 +4,8 @@ import (
 	"testing"
 
 	"github.com/josephspurrier/gocleanarchitecture/domain"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // TestMockService ensures the mock service works correctly.
@@ -14,14 +16,14 @@ func TestMockService(t *testing.T) {
 	// Test forced failures.
 	s.WriteFail = true
 	s.ReadFail = true
-	AssertNotNil(t, s.read())
-	AssertNotNil(t, s.write())
+	assert.NotNil(t, s.read())
+	assert.NotNil(t, s.write())
 
 	// Test no failures.
 	s.WriteFail = false
 	s.ReadFail = false
-	AssertEqual(t, s.read(), nil)
-	AssertEqual(t, s.write(), nil)
+	assert.Equal(t, s.read(), nil)
+	assert.Equal(t, s.write(), nil)
 
 	// Test adding a record and reading it.
 	u := new(domain.User)
@@ -29,6 +31,6 @@ func TestMockService(t *testing.T) {
 	u.Password = "Pa$$w0rd"
 	s.AddRecord(*u)
 	records, err := s.Records()
-	AssertEqual(t, len(records), 1)
-	AssertEqual(t, err, nil)
+	assert.Equal(t, len(records), 1)
+	assert.Equal(t, err, nil)
 }

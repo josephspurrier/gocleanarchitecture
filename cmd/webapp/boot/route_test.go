@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/josephspurrier/gocleanarchitecture/cmd/webapp/boot"
+	"github.com/stretchr/testify/assert"
 )
 
 // TestRoutes ensures each of the routes is set up properly.
@@ -24,7 +25,7 @@ func TestRoutes(t *testing.T) {
 		t.Fatal(err)
 	}
 	h.ServeHTTP(w, r)
-	AssertEqual(t, w.Code, http.StatusOK)
+	assert.Equal(t, w.Code, http.StatusOK)
 
 	// Test a 404.
 	w = httptest.NewRecorder()
@@ -33,7 +34,7 @@ func TestRoutes(t *testing.T) {
 		t.Fatal(err)
 	}
 	h.ServeHTTP(w, r)
-	AssertEqual(t, w.Code, http.StatusNotFound)
+	assert.Equal(t, w.Code, http.StatusNotFound)
 
 	// Test the register page.
 	w = httptest.NewRecorder()
@@ -42,5 +43,5 @@ func TestRoutes(t *testing.T) {
 		t.Fatal(err)
 	}
 	h.ServeHTTP(w, r)
-	AssertEqual(t, w.Code, http.StatusOK)
+	assert.Equal(t, w.Code, http.StatusOK)
 }

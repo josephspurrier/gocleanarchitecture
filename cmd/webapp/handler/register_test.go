@@ -12,6 +12,8 @@ import (
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // TestRegisterIndex ensures the index function returns a 200 code.
@@ -29,7 +31,7 @@ func TestRegisterIndex(t *testing.T) {
 	h.Index(w, r)
 
 	// Check the output.
-	AssertEqual(t, w.Code, http.StatusOK)
+	assert.Equal(t, w.Code, http.StatusOK)
 }
 
 // TestRegisterStoreCreateOK ensures register can be successful.
@@ -58,12 +60,12 @@ func TestRegisterStoreCreateOK(t *testing.T) {
 	h.Index(w, r)
 
 	// Check the output.
-	AssertEqual(t, w.Code, http.StatusCreated)
+	assert.Equal(t, w.Code, http.StatusCreated)
 
 	// Fail on duplicate creation.
 	w = httptest.NewRecorder()
 	h.Index(w, r)
-	AssertEqual(t, w.Code, http.StatusInternalServerError)
+	assert.Equal(t, w.Code, http.StatusInternalServerError)
 }
 
 // TestRegisterStoreCreateNoFieldFail ensures register can fail with no fields.
@@ -84,7 +86,7 @@ func TestRegisterStoreCreateNoFieldFail(t *testing.T) {
 	h.Index(w, r)
 
 	// Check the output.
-	AssertEqual(t, w.Code, http.StatusBadRequest)
+	assert.Equal(t, w.Code, http.StatusBadRequest)
 }
 
 // TestRegisterStoreCreateOneMissingFieldFail ensures register can fail with one missing
@@ -114,5 +116,5 @@ func TestRegisterStoreCreateOneMissingFieldFail(t *testing.T) {
 	h.Index(w, r)
 
 	// Check the output.
-	AssertEqual(t, w.Code, http.StatusBadRequest)
+	assert.Equal(t, w.Code, http.StatusBadRequest)
 }

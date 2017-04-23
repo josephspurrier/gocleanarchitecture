@@ -12,6 +12,8 @@ import (
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // TestLoginIndex ensures the index function returns a 200 code.
@@ -29,7 +31,7 @@ func TestLoginIndex(t *testing.T) {
 	h.Index(w, r)
 
 	// Check the output.
-	AssertEqual(t, w.Code, http.StatusOK)
+	assert.Equal(t, w.Code, http.StatusOK)
 }
 
 // TestLoginStoreMissingRequiredField ensures required fields should be entered.
@@ -50,7 +52,7 @@ func TestLoginStoreMissingRequiredFields(t *testing.T) {
 	h.Index(w, r)
 
 	// Check the output.
-	AssertEqual(t, w.Code, http.StatusBadRequest)
+	assert.Equal(t, w.Code, http.StatusBadRequest)
 }
 
 // TestLoginStoreAuthenticateOK ensures login can be successful.
@@ -87,7 +89,7 @@ func TestLoginStoreAuthenticateOK(t *testing.T) {
 	h.Index(w, r)
 
 	// Check the output.
-	AssertEqual(t, w.Code, http.StatusOK)
+	assert.Equal(t, w.Code, http.StatusOK)
 }
 
 // TestLoginStoreAuthenticateFail ensures login can fail.
@@ -124,5 +126,5 @@ func TestLoginStoreAuthenticateFail(t *testing.T) {
 	h.Index(w, r)
 
 	// Check the output.
-	AssertEqual(t, w.Code, http.StatusUnauthorized)
+	assert.Equal(t, w.Code, http.StatusUnauthorized)
 }
