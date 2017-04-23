@@ -62,7 +62,7 @@ func TestRenderFail(t *testing.T) {
 // TestRenderExecuteFail ensures render fails properly.
 func TestRenderExecuteFail(t *testing.T) {
 	// Test adding and retrieving a variable.
-	v := New("../../view", "tmpl")
+	v := New("testdata", "tmpl")
 
 	// Set up the request.
 	br := new(BadResponseWriter)
