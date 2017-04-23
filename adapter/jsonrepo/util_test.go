@@ -1,4 +1,4 @@
-package repo_test
+package jsonrepo_test
 
 import "testing"
 

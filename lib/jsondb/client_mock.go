@@ -21,7 +21,7 @@ type MockService struct {
 }
 
 // Reads reads database.
-func (c *MockService) Read() error {
+func (c *MockService) read() error {
 	if c.ReadFail {
 		return ErrMockRead
 	}
@@ -29,7 +29,7 @@ func (c *MockService) Read() error {
 }
 
 // Write saves the database.
-func (c *MockService) Write() error {
+func (c *MockService) write() error {
 	if c.WriteFail {
 		return ErrMockWrite
 	}
@@ -37,16 +37,29 @@ func (c *MockService) Write() error {
 }
 
 // AddRecord adds a record to the database.
-func (c *MockService) AddRecord(rec interface{}) {
+func (c *MockService) AddRecord(rec interface{}) error {
+	err := c.read()
+	if err != nil {
+		return err
+	}
+
 	c.mutex.Lock()
 	c.records = append(c.records, rec)
 	c.mutex.Unlock()
+
+	return c.write()
 }
 
 // Records retrieves all records from the database.
-func (c *MockService) Records() []interface{} {
+func (c *MockService) Records() ([]interface{}, error) {
+	err := c.read()
+	if err != nil {
+		return c.records, err
+	}
+
 	c.mutex.RLock()
 	r := c.records
 	c.mutex.RUnlock()
-	return r
+
+	return r, nil
 }

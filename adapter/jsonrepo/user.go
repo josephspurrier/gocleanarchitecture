@@ -1,4 +1,4 @@
-package repo
+package jsonrepo
 
 import (
 	"github.com/josephspurrier/gocleanarchitecture/domain"
@@ -8,10 +8,8 @@ import (
 
 // IRepoService is the interface for storage.
 type IRepoService interface {
-	Read() error
-	Write() error
-	Records() []interface{}
-	AddRecord(interface{})
+	Records() ([]interface{}, error)
+	AddRecord(interface{}) error
 }
 
 // UserService implements the service for storage of users.
@@ -30,14 +28,14 @@ func NewUserRepo(client IRepoService) *UserService {
 func (s *UserService) ByEmail(email string) (*domain.User, error) {
 	item := new(domain.User)
 
-	// Load the data.
-	err := s.client.Read()
+	// Retrieve the records
+	records, err := s.client.Records()
 	if err != nil {
 		return item, err
 	}
 
 	// Determine if the record exists.
-	for _, r := range s.client.Records() {
+	for _, r := range records {
 		// Decode the user from the database.
 		var v domain.User
 		err = mapstructure.Decode(r, &v)
@@ -56,15 +54,6 @@ func (s *UserService) ByEmail(email string) (*domain.User, error) {
 
 // Store adds a user or returns an error.
 func (s *UserService) Store(item *domain.User) error {
-	// Load the data.
-	err := s.client.Read()
-	if err != nil {
-		return err
-	}
-
 	// Add the record.
-	s.client.AddRecord(*item)
-
-	// Save the record to the database.
-	return s.client.Write()
+	return s.client.AddRecord(*item)
 }

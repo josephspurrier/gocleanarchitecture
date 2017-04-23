@@ -32,7 +32,7 @@ func NewClient(path string) *Client {
 }
 
 // Reads opens/initializes the database.
-func (c *Client) Read() error {
+func (c *Client) read() error {
 	var err error
 	var b []byte
 
@@ -61,7 +61,7 @@ func (c *Client) Read() error {
 }
 
 // Write saves the database.
-func (c *Client) Write() error {
+func (c *Client) write() error {
 	var err error
 	var b []byte
 
@@ -85,11 +85,22 @@ func (c *Client) Write() error {
 }
 
 // AddRecord adds a record to the database.
-func (c *Client) AddRecord(rec interface{}) {
+func (c *Client) AddRecord(rec interface{}) error {
+	// Load the data.
+	err := c.read()
+	if err != nil {
+		return err
+	}
+
 	c.data.Records = append(c.data.Records, rec)
+
+	// Save the record to the database.
+	return c.write()
 }
 
 // Records retrieves all records from the database.
-func (c *Client) Records() []interface{} {
-	return c.data.Records
+func (c *Client) Records() ([]interface{}, error) {
+	// Load the data.
+	err := c.read()
+	return c.data.Records, err
 }

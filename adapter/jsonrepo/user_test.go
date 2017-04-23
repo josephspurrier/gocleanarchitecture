@@ -1,9 +1,9 @@
-package repo_test
+package jsonrepo_test
 
 import (
 	"testing"
 
-	"github.com/josephspurrier/gocleanarchitecture/adapter/repo"
+	"github.com/josephspurrier/gocleanarchitecture/adapter/jsonrepo"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
 )
@@ -11,7 +11,7 @@ import (
 // TestUserRepo tests the user repo.
 func TestUserRepo(t *testing.T) {
 	db := new(jsondb.MockService)
-	s := repo.NewUserRepo(db)
+	s := jsonrepo.NewUserRepo(db)
 
 	_, err := s.ByEmail("bad@example.com")
 	AssertEqual(t, err, domain.ErrUserNotFound)
@@ -29,7 +29,7 @@ func TestUserRepo(t *testing.T) {
 // TestUserRepoFail tests the user repo.
 func TestUserRepoFail(t *testing.T) {
 	db := new(jsondb.MockService)
-	s := repo.NewUserRepo(db)
+	s := jsonrepo.NewUserRepo(db)
 
 	db.WriteFail = true
 	u := new(domain.User)

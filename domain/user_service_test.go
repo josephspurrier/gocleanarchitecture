@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/josephspurrier/gocleanarchitecture/adapter/jsonrepo"
 	"github.com/josephspurrier/gocleanarchitecture/adapter/passhash"
-	"github.com/josephspurrier/gocleanarchitecture/adapter/repo"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
 )
@@ -26,7 +26,7 @@ func (s *BadHasher) Match(hash, password string) bool {
 // setup handles the creation of the service.
 func setup() *domain.UserService {
 	return domain.NewUserService(
-		repo.NewUserRepo(new(jsondb.MockService)),
+		jsonrepo.NewUserRepo(new(jsondb.MockService)),
 		new(passhash.Item))
 }
 
@@ -85,7 +85,7 @@ func TestAuthenticate(t *testing.T) {
 func TestUserFailures(t *testing.T) {
 	// Test user creation.
 	db := new(jsondb.MockService)
-	s := domain.NewUserService(repo.NewUserRepo(db), new(passhash.Item))
+	s := domain.NewUserService(jsonrepo.NewUserRepo(db), new(passhash.Item))
 
 	db.WriteFail = true
 	db.ReadFail = true
@@ -114,7 +114,7 @@ func TestUserFailures(t *testing.T) {
 func TestBadHasherFailures(t *testing.T) {
 	// Test user creation.
 	db := new(jsondb.MockService)
-	s := domain.NewUserService(repo.NewUserRepo(db), new(BadHasher))
+	s := domain.NewUserService(jsonrepo.NewUserRepo(db), new(BadHasher))
 
 	u := new(domain.User)
 	u.Email = "ssmith@example.com"

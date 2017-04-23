@@ -1,8 +1,8 @@
 package boot
 
 import (
+	"github.com/josephspurrier/gocleanarchitecture/adapter/jsonrepo"
 	"github.com/josephspurrier/gocleanarchitecture/adapter/passhash"
-	"github.com/josephspurrier/gocleanarchitecture/adapter/repo"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
@@ -24,7 +24,7 @@ func RegisterServices(templateFolder string) *Service {
 
 	// Store all the services for the application.
 	s.User = domain.NewUserService(
-		repo.NewUserRepo(db),
+		jsonrepo.NewUserRepo(db),
 		new(passhash.Item))
 	s.View = view.New(templateFolder, "tmpl")
 

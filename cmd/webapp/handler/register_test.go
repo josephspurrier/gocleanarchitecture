@@ -6,8 +6,8 @@ import (
 	"net/url"
 	"testing"
 
+	"github.com/josephspurrier/gocleanarchitecture/adapter/jsonrepo"
 	"github.com/josephspurrier/gocleanarchitecture/adapter/passhash"
-	"github.com/josephspurrier/gocleanarchitecture/adapter/repo"
 	"github.com/josephspurrier/gocleanarchitecture/cmd/webapp/handler"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
@@ -52,7 +52,7 @@ func TestRegisterStoreCreateOK(t *testing.T) {
 	// Call the handler.
 	h := new(handler.Register)
 	h.User = domain.NewUserService(
-		repo.NewUserRepo(new(jsondb.MockService)),
+		jsonrepo.NewUserRepo(new(jsondb.MockService)),
 		new(passhash.Item))
 	h.View = view.New("../view", "tmpl")
 	h.Index(w, r)
@@ -78,7 +78,7 @@ func TestRegisterStoreCreateNoFieldFail(t *testing.T) {
 	// Call the handler.
 	h := new(handler.Register)
 	h.User = domain.NewUserService(
-		repo.NewUserRepo(new(jsondb.MockService)),
+		jsonrepo.NewUserRepo(new(jsondb.MockService)),
 		new(passhash.Item))
 	h.View = view.New("../view", "tmpl")
 	h.Index(w, r)
@@ -108,7 +108,7 @@ func TestRegisterStoreCreateOneMissingFieldFail(t *testing.T) {
 	// Call the handler.
 	h := new(handler.Register)
 	h.User = domain.NewUserService(
-		repo.NewUserRepo(new(jsondb.MockService)),
+		jsonrepo.NewUserRepo(new(jsondb.MockService)),
 		new(passhash.Item))
 	h.View = view.New("../view", "tmpl")
 	h.Index(w, r)

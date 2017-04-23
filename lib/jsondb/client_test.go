@@ -14,19 +14,21 @@ func TestClient(t *testing.T) {
 
 	// Check the output.
 	AssertEqual(t, c.Path, "db.json")
-	AssertEqual(t, c.Write(), nil)
-	AssertEqual(t, c.Read(), nil)
-	AssertEqual(t, c.Write(), nil)
+	AssertEqual(t, c.write(), nil)
+	AssertEqual(t, c.read(), nil)
+	AssertEqual(t, c.write(), nil)
 
 	// Test adding a record and reading it.
 	u := new(domain.User)
 	u.Email = "jdoe@example.com"
 	u.Password = "Pa$$w0rd"
 	c.AddRecord(*u)
-	AssertEqual(t, len(c.Records()), 1)
+	records, err := c.Records()
+	AssertEqual(t, len(records), 1)
+	AssertEqual(t, err, nil)
 
 	// Cleanup
-	err := os.Remove("db.json")
+	err = os.Remove("db.json")
 	if err != nil {
 		t.Error(err)
 	}
@@ -38,8 +40,8 @@ func TestClientFail(t *testing.T) {
 
 	// Check the output.
 	AssertEqual(t, c.Path, "")
-	AssertNotNil(t, c.Write())
-	AssertNotNil(t, c.Read())
+	AssertNotNil(t, c.write())
+	AssertNotNil(t, c.read())
 }
 
 // TestClientFailOpen ensures the client fails properly.
@@ -53,7 +55,7 @@ func TestClientFailOpen(t *testing.T) {
 	}
 
 	// Check the output.
-	AssertNotNil(t, c.Read())
+	AssertNotNil(t, c.read())
 
 	// Cleanup
 	err = os.Remove("dbbad.json")

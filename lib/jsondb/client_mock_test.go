@@ -14,19 +14,21 @@ func TestMockService(t *testing.T) {
 	// Test forced failures.
 	s.WriteFail = true
 	s.ReadFail = true
-	AssertNotNil(t, s.Read())
-	AssertNotNil(t, s.Write())
+	AssertNotNil(t, s.read())
+	AssertNotNil(t, s.write())
 
 	// Test no failures.
 	s.WriteFail = false
 	s.ReadFail = false
-	AssertEqual(t, s.Read(), nil)
-	AssertEqual(t, s.Write(), nil)
+	AssertEqual(t, s.read(), nil)
+	AssertEqual(t, s.write(), nil)
 
 	// Test adding a record and reading it.
 	u := new(domain.User)
 	u.Email = "jdoe@example.com"
 	u.Password = "Pa$$w0rd"
 	s.AddRecord(*u)
-	AssertEqual(t, len(s.Records()), 1)
+	records, err := s.Records()
+	AssertEqual(t, len(records), 1)
+	AssertEqual(t, err, nil)
 }
