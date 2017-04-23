@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"path"
 	"sync"
 )
 
@@ -21,10 +22,11 @@ type Client struct {
 	mutex sync.RWMutex
 }
 
-// NewClient returns a new database client.
-func NewClient(path string) *Client {
+// New takes a folder path and returns a new database client. All json files
+// are stored in a folder.
+func New(folderPath string) *Client {
 	c := &Client{
-		Path: path,
+		Path: folderPath,
 		data: new(Schema),
 	}
 
@@ -32,26 +34,32 @@ func NewClient(path string) *Client {
 }
 
 // Reads opens/initializes the database.
-func (c *Client) read() error {
+func (c *Client) read(recordType string) error {
 	var err error
 	var b []byte
 
+	// Set the file path.
+	filePath := path.Join(c.Path, recordType+".json")
+
 	c.mutex.Lock()
 
-	if _, err = os.Stat(c.Path); os.IsNotExist(err) {
-		err = ioutil.WriteFile(c.Path, []byte("{}"), 0644)
+	// Check if the file exists.
+	if _, err = os.Stat(filePath); os.IsNotExist(err) {
+		err = ioutil.WriteFile(filePath, []byte("{}"), 0644)
 		if err != nil {
 			c.mutex.Unlock()
 			return err
 		}
 	}
 
-	b, err = ioutil.ReadFile(c.Path)
+	// Read the file.
+	b, err = ioutil.ReadFile(filePath)
 	if err != nil {
 		c.mutex.Unlock()
 		return err
 	}
 
+	// Read the data into the struct.
 	c.data = new(Schema)
 	err = json.Unmarshal(b, &c.data)
 
@@ -61,19 +69,24 @@ func (c *Client) read() error {
 }
 
 // Write saves the database.
-func (c *Client) write() error {
+func (c *Client) write(recordType string) error {
 	var err error
 	var b []byte
 
+	// Set the file path.
+	filePath := path.Join(c.Path, recordType+".json")
+
 	c.mutex.Lock()
 
+	// Convert the struct to bytes.
 	b, err = json.Marshal(c.data)
 	if err != nil {
 		c.mutex.Unlock()
 		return err
 	}
 
-	err = ioutil.WriteFile(c.Path, b, 0644)
+	// Write the bytes to a file.
+	err = ioutil.WriteFile(filePath, b, 0644)
 	if err != nil {
 		c.mutex.Unlock()
 		return err
@@ -85,9 +98,9 @@ func (c *Client) write() error {
 }
 
 // AddRecord adds a record to the database.
-func (c *Client) AddRecord(rec interface{}) error {
+func (c *Client) AddRecord(recordType string, rec interface{}) error {
 	// Load the data.
-	err := c.read()
+	err := c.read(recordType)
 	if err != nil {
 		return err
 	}
@@ -95,12 +108,12 @@ func (c *Client) AddRecord(rec interface{}) error {
 	c.data.Records = append(c.data.Records, rec)
 
 	// Save the record to the database.
-	return c.write()
+	return c.write(recordType)
 }
 
 // Records retrieves all records from the database.
-func (c *Client) Records() ([]interface{}, error) {
+func (c *Client) Records(recordType string) ([]interface{}, error) {
 	// Load the data.
-	err := c.read()
+	err := c.read(recordType)
 	return c.data.Records, err
 }

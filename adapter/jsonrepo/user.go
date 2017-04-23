@@ -8,8 +8,8 @@ import (
 
 // IRepoService is the interface for storage.
 type IRepoService interface {
-	Records() ([]interface{}, error)
-	AddRecord(interface{}) error
+	Records(string) ([]interface{}, error)
+	AddRecord(string, interface{}) error
 }
 
 // UserService implements the service for storage of users.
@@ -29,7 +29,7 @@ func (s *UserService) ByEmail(email string) (*domain.User, error) {
 	item := new(domain.User)
 
 	// Retrieve the records
-	records, err := s.client.Records()
+	records, err := s.client.Records("user")
 	if err != nil {
 		return item, err
 	}
@@ -55,5 +55,5 @@ func (s *UserService) ByEmail(email string) (*domain.User, error) {
 // Store adds a user or returns an error.
 func (s *UserService) Store(item *domain.User) error {
 	// Add the record.
-	return s.client.AddRecord(*item)
+	return s.client.AddRecord("user", *item)
 }

@@ -3,6 +3,7 @@ package jsondb
 import (
 	"io/ioutil"
 	"os"
+	"path"
 	"testing"
 
 	"github.com/josephspurrier/gocleanarchitecture/domain"
@@ -12,55 +13,49 @@ import (
 
 // TestClient ensures the client works properly.
 func TestClient(t *testing.T) {
-	c := NewClient("db.json")
+	c := New("testdata")
+
+	recordType := "bar"
 
 	// Check the output.
-	assert.Equal(t, c.Path, "db.json")
-	assert.Equal(t, c.write(), nil)
-	assert.Equal(t, c.read(), nil)
-	assert.Equal(t, c.write(), nil)
+	assert.Equal(t, c.Path, "testdata")
+	assert.Equal(t, c.write(recordType), nil)
+	assert.Equal(t, c.read(recordType), nil)
+	assert.Equal(t, c.write(recordType), nil)
 
 	// Test adding a record and reading it.
 	u := new(domain.User)
 	u.Email = "jdoe@example.com"
 	u.Password = "Pa$$w0rd"
-	c.AddRecord(*u)
-	records, err := c.Records()
+	c.AddRecord(recordType, *u)
+	records, err := c.Records(recordType)
 	assert.Equal(t, len(records), 1)
 	assert.Equal(t, err, nil)
 
 	// Cleanup
-	err = os.Remove("db.json")
+	err = os.Remove(path.Join("testdata", recordType+".json"))
 	if err != nil {
 		t.Error(err)
 	}
-}
-
-// TestClient ensures the client fails properly.
-func TestClientFail(t *testing.T) {
-	c := NewClient("")
-
-	// Check the output.
-	assert.Equal(t, c.Path, "")
-	assert.NotNil(t, c.write())
-	assert.NotNil(t, c.read())
 }
 
 // TestClientFailOpen ensures the client fails properly.
 func TestClientFailOpen(t *testing.T) {
-	c := NewClient("dbbad.json")
+	c := New("testdata")
+
+	filePath := path.Join("testdata", "foobad.json")
 
 	// Write a bad file.
-	err := ioutil.WriteFile("dbbad.json", []byte("{"), 0644)
+	err := ioutil.WriteFile(filePath, []byte("{"), 0644)
 	if err != nil {
 		t.Error(err)
 	}
 
 	// Check the output.
-	assert.NotNil(t, c.read())
+	assert.NotNil(t, c.read("foobad"))
 
 	// Cleanup
-	err = os.Remove("dbbad.json")
+	err = os.Remove(filePath)
 	if err != nil {
 		t.Error(err)
 	}

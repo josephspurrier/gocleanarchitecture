@@ -20,7 +20,7 @@ func RegisterServices(templateFolder string) *Service {
 	s := new(Service)
 
 	// Initialize the clients.
-	db := jsondb.NewClient("db.json")
+	db := jsondb.New("jsondb")
 
 	// Store all the services for the application.
 	s.User = domain.NewUserService(

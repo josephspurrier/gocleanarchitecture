@@ -29,8 +29,8 @@ func TestMockService(t *testing.T) {
 	u := new(domain.User)
 	u.Email = "jdoe@example.com"
 	u.Password = "Pa$$w0rd"
-	s.AddRecord(*u)
-	records, err := s.Records()
+	s.AddRecord("user", *u)
+	records, err := s.Records("user")
 	assert.Equal(t, len(records), 1)
 	assert.Equal(t, err, nil)
 }

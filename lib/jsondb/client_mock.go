@@ -37,7 +37,7 @@ func (c *MockService) write() error {
 }
 
 // AddRecord adds a record to the database.
-func (c *MockService) AddRecord(rec interface{}) error {
+func (c *MockService) AddRecord(recordType string, rec interface{}) error {
 	err := c.read()
 	if err != nil {
 		return err
@@ -51,7 +51,7 @@ func (c *MockService) AddRecord(rec interface{}) error {
 }
 
 // Records retrieves all records from the database.
-func (c *MockService) Records() ([]interface{}, error) {
+func (c *MockService) Records(recordType string) ([]interface{}, error) {
 	err := c.read()
 	if err != nil {
 		return c.records, err
