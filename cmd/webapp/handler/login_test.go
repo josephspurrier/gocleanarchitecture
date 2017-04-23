@@ -86,7 +86,7 @@ func TestLoginStoreAuthenticateOK(t *testing.T) {
 		t.Error(err)
 	}
 
-	h.Index(w, r)
+	h.Store(w, r)
 
 	// Check the output.
 	assert.Equal(t, w.Code, http.StatusOK)
