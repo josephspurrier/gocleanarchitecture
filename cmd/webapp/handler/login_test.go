@@ -48,7 +48,7 @@ func TestLoginStoreMissingRequiredFields(t *testing.T) {
 	h.User = domain.NewUserService(
 		jsonrepo.NewUserRepo(new(jsondb.MockService)),
 		new(adapter.Passhash))
-	h.View = view.New("../html", "tmpl")
+	//h.View = view.New("../html", "tmpl")
 	h.Store(w, r)
 
 	// Check the output.
@@ -77,7 +77,7 @@ func TestLoginStoreAuthenticateOK(t *testing.T) {
 	h.User = domain.NewUserService(
 		jsonrepo.NewUserRepo(new(jsondb.MockService)),
 		new(adapter.Passhash))
-	h.View = view.New("../html", "tmpl")
+	//h.View = view.New("../html", "tmpl")
 
 	// Create a new user.
 	err = h.User.Create("first", "last", email, password)
@@ -113,7 +113,7 @@ func TestLoginStoreAuthenticateFail(t *testing.T) {
 	h.User = domain.NewUserService(
 		jsonrepo.NewUserRepo(new(jsondb.MockService)),
 		new(adapter.Passhash))
-	h.View = view.New("../html", "tmpl")
+	//h.View = view.New("../html", "tmpl")
 
 	// Create a new user.
 	err = h.User.Create("first", "last", email, password+"bad")

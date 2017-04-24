@@ -55,7 +55,7 @@ func TestRegisterStoreCreateOK(t *testing.T) {
 	h.User = domain.NewUserService(
 		jsonrepo.NewUserRepo(new(jsondb.MockService)),
 		new(adapter.Passhash))
-	h.View = view.New("../view", "tmpl")
+	//h.View = view.New("../html", "tmpl")
 	h.Store(w, r)
 
 	// Check the output.
@@ -81,7 +81,7 @@ func TestRegisterStoreCreateNoFieldFail(t *testing.T) {
 	h.User = domain.NewUserService(
 		jsonrepo.NewUserRepo(new(jsondb.MockService)),
 		new(adapter.Passhash))
-	h.View = view.New("../view", "tmpl")
+	//h.View = view.New("../html", "tmpl")
 	h.Store(w, r)
 
 	// Check the output.
@@ -110,7 +110,7 @@ func TestRegisterStoreCreateOneMissingFieldFail(t *testing.T) {
 	h.User = domain.NewUserService(
 		jsonrepo.NewUserRepo(new(jsondb.MockService)),
 		new(adapter.Passhash))
-	h.View = view.New("../view", "tmpl")
+	//h.View = view.New("../html", "tmpl")
 	h.Store(w, r)
 
 	// Check the output.
