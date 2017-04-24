@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/josephspurrier/gocleanarchitecture/adapter"
 	"github.com/josephspurrier/gocleanarchitecture/adapter/jsonrepo"
-	appadapter "github.com/josephspurrier/gocleanarchitecture/cmd/webapp/adapter"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
 	"github.com/josephspurrier/gocleanarchitecture/lib/view"
@@ -12,7 +11,7 @@ import (
 // Service represents all the services that the application uses.
 type Service struct {
 	User domain.IUserService
-	View appadapter.IViewService
+	View adapter.IViewService
 }
 
 // RegisterServices sets up each service and returns the container for all

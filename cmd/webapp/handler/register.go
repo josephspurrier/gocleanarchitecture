@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/josephspurrier/gocleanarchitecture/cmd/webapp/adapter"
+	"github.com/josephspurrier/gocleanarchitecture/adapter"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 )
 
