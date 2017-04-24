@@ -6,12 +6,6 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
-// IRepoService is the interface for storage.
-type IRepoService interface {
-	Records(recordType string) ([]interface{}, error)
-	AddRecord(recordType string, record interface{}) error
-}
-
 // UserService implements the service for storage of users.
 type UserService struct {
 	client IRepoService
