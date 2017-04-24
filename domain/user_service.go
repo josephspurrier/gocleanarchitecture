@@ -3,8 +3,8 @@ package domain
 // IUserService is the interface for users.
 type IUserService interface {
 	ByEmail(email string) (*User, error)
-	Create(item *User) error
-	Authenticate(item *User) error
+	Create(firstname, lastname, email, password string) error
+	Authenticate(email, password string) error
 }
 
 // UserService implements the service for users.
@@ -28,14 +28,14 @@ func NewUserService(repo IUserRepo, hash IPasshash) *UserService {
 }
 
 // Authenticate returns an error if the email and password don't match.
-func (s *UserService) Authenticate(item *User) error {
-	q, err := s.repo.ByEmail(item.Email)
+func (s *UserService) Authenticate(email, password string) error {
+	q, err := s.repo.ByEmail(email)
 	if err != nil {
 		return ErrUserNotFound
 	}
 
 	// If passwords match.
-	if s.hash.Match(q.Password, item.Password) {
+	if s.hash.Match(q.Password, password) {
 		return nil
 	}
 
@@ -53,24 +53,29 @@ func (s *UserService) ByEmail(email string) (*User, error) {
 }
 
 // Create a new user.
-func (s *UserService) Create(item *User) error {
-	_, err := s.repo.ByEmail(item.Email)
+func (s *UserService) Create(firstname, lastname, email,
+	password string) error {
+	// Check if a user already exists.
+	_, err := s.repo.ByEmail(email)
 	if err == nil {
 		return ErrUserAlreadyExist
 	}
 
-	passNew, err := s.hash.Hash(item.Password)
+	// Hash the password.
+	passNew, err := s.hash.Hash(password)
 	if err != nil {
 		return ErrPasswordHash
 	}
 
-	// Swap the password.
-	passOld := item.Password
+	// Create the user.
+	item := new(User)
+	item.FirstName = firstname
+	item.LastName = lastname
+	item.Email = email
 	item.Password = passNew
-	err = s.repo.Store(item)
 
-	// Restore the password.
-	item.Password = passOld
+	// Store the user.
+	err = s.repo.Store(item)
 
 	return err
 }

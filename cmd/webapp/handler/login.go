@@ -32,11 +32,8 @@ func (h *Login) Store(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	u := new(domain.User)
-	u.Email = r.FormValue("email")
-	u.Password = r.FormValue("password")
-
-	err := h.User.Authenticate(u)
+	err := h.User.Authenticate(r.PostFormValue("email"),
+		r.PostFormValue("password"))
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		fmt.Fprint(w, `<html>Login failed. `+

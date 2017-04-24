@@ -37,20 +37,19 @@ func TestCreateUser(t *testing.T) {
 	// Test user creation.
 	s := setup()
 
-	u := new(domain.User)
-	u.Email = "jdoe@example.com"
-	u.Password = "Pa$$w0rd"
-	err := s.Create(u)
+	email := "jdoe@example.com"
+	password := "Pa$$w0rd"
+	err := s.Create("first", "last", email, password)
 	assert.Equal(t, err, nil)
 
 	// Test user creation fail.
-	err = s.Create(u)
+	err = s.Create("first", "last", email, password)
 	assert.Equal(t, err, domain.ErrUserAlreadyExist)
 
 	// Test user query.
-	uTest, err := s.ByEmail("jdoe@example.com")
+	uTest, err := s.ByEmail(email)
 	assert.Equal(t, err, nil)
-	assert.Equal(t, uTest.Email, "jdoe@example.com")
+	assert.Equal(t, uTest.Email, email)
 
 	// Test failed user query.
 	_, err = s.ByEmail("bademail@example.com")
@@ -62,25 +61,24 @@ func TestAuthenticate(t *testing.T) {
 	// Test user creation.
 	s := setup()
 
-	u := new(domain.User)
-	u.Email = "ssmith@example.com"
-	u.Password = "Pa$$w0rd"
-	err := s.Create(u)
-	assert.Equal(t, err, nil)
+	email := "ssmith@example.com"
+	password := "Pa$$w0rd"
+	err := s.Create("first", "last", email, password)
+	assert.Equal(t, nil, err)
 
 	// Test user authentication.
-	err = s.Authenticate(u)
-	assert.Equal(t, err, nil)
+	err = s.Authenticate(email, password)
+	assert.Equal(t, nil, err)
 
 	// Test failed user authentication.
-	u.Password = "BadPa$$w0rd"
-	err = s.Authenticate(u)
-	assert.Equal(t, err, domain.ErrUserPasswordNotMatch)
+	password = "BadPa$$w0rd"
+	err = s.Authenticate(email, password)
+	assert.Equal(t, domain.ErrUserPasswordNotMatch, err)
 
 	// Test failed user authentication.
-	u.Email = "bfranklin@example.com"
-	err = s.Authenticate(u)
-	assert.Equal(t, err, domain.ErrUserNotFound)
+	email = "bfranklin@example.com"
+	err = s.Authenticate(email, password)
+	assert.Equal(t, domain.ErrUserNotFound, err)
 }
 
 // TestUserFailures ensures user fails properly.
@@ -92,14 +90,13 @@ func TestUserFailures(t *testing.T) {
 	db.WriteFail = true
 	db.ReadFail = true
 
-	u := new(domain.User)
-	u.Email = "ssmith@example.com"
-	u.Password = "Pa$$w0rd"
-	err := s.Create(u)
+	email := "ssmith@example.com"
+	password := "Pa$$w0rd"
+	err := s.Create("first", "last", email, password)
 	assert.NotNil(t, err)
 
 	// Test user authentication.
-	err = s.Authenticate(u)
+	err = s.Authenticate(email, password)
 	assert.NotNil(t, err)
 
 	// Test failed user query.
@@ -107,8 +104,8 @@ func TestUserFailures(t *testing.T) {
 	assert.NotNil(t, err)
 
 	// Test failed user authentication.
-	u.Email = "bfranklin@example.com"
-	err = s.Authenticate(u)
+	email = "bfranklin@example.com"
+	err = s.Authenticate(email, password)
 	assert.NotNil(t, err)
 }
 
@@ -118,9 +115,8 @@ func TestBadHasherFailures(t *testing.T) {
 	db := new(jsondb.MockService)
 	s := domain.NewUserService(jsonrepo.NewUserRepo(db), new(BadHasher))
 
-	u := new(domain.User)
-	u.Email = "ssmith@example.com"
-	u.Password = "Pa$$w0rd"
-	err := s.Create(u)
-	assert.Equal(t, err, domain.ErrPasswordHash)
+	email := "ssmith@example.com"
+	password := "Pa$$w0rd"
+	err := s.Create("first", "last", email, password)
+	assert.Equal(t, domain.ErrPasswordHash, err)
 }

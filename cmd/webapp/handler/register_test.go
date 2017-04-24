@@ -31,7 +31,7 @@ func TestRegisterIndex(t *testing.T) {
 	h.Index(w, r)
 
 	// Check the output.
-	assert.Equal(t, w.Code, http.StatusOK)
+	assert.Equal(t, http.StatusOK, w.Code)
 }
 
 // TestRegisterStoreCreateOK ensures register can be successful.
@@ -60,7 +60,7 @@ func TestRegisterStoreCreateOK(t *testing.T) {
 	h.Store(w, r)
 
 	// Check the output.
-	assert.Equal(t, w.Code, http.StatusCreated)
+	assert.Equal(t, http.StatusCreated, w.Code)
 
 	// Fail on duplicate creation.
 	w = httptest.NewRecorder()
@@ -86,7 +86,7 @@ func TestRegisterStoreCreateNoFieldFail(t *testing.T) {
 	h.Store(w, r)
 
 	// Check the output.
-	assert.Equal(t, w.Code, http.StatusBadRequest)
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
 
 // TestRegisterStoreCreateOneMissingFieldFail ensures register can fail with one missing
@@ -116,5 +116,5 @@ func TestRegisterStoreCreateOneMissingFieldFail(t *testing.T) {
 	h.Store(w, r)
 
 	// Check the output.
-	assert.Equal(t, w.Code, http.StatusBadRequest)
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }

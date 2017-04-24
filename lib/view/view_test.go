@@ -34,11 +34,11 @@ func TestVar(t *testing.T) {
 	// Test adding and retrieving a variable.
 	v := New("", "")
 	v.AddVar("foo", "bar")
-	assert.Equal(t, v.GetVar("foo"), "bar")
+	assert.Equal(t, "bar", v.GetVar("foo"))
 
 	// Test deleting a variable.
 	v.DelVar("foo")
-	assert.Equal(t, v.GetVar("foo"), nil)
+	assert.Equal(t, nil, v.GetVar("foo"))
 }
 
 // TestRenderFail ensures render fails properly.
@@ -56,7 +56,7 @@ func TestRenderFail(t *testing.T) {
 	// Fail on template parse error.
 	err = v.Render(w, r)
 	assert.NotNil(t, err)
-	assert.Equal(t, w.Code, http.StatusInternalServerError)
+	assert.Equal(t, http.StatusInternalServerError, w.Code)
 }
 
 // TestRenderExecuteFail ensures render fails properly.
@@ -74,5 +74,5 @@ func TestRenderExecuteFail(t *testing.T) {
 	// Fail on file parse error.
 	err = v.Render(br, r)
 	assert.NotNil(t, err)
-	assert.Equal(t, br.Failed, true)
+	assert.Equal(t, true, br.Failed)
 }

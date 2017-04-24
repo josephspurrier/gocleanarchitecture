@@ -22,8 +22,8 @@ func TestMockService(t *testing.T) {
 	// Test no failures.
 	s.WriteFail = false
 	s.ReadFail = false
-	assert.Equal(t, s.read(), nil)
-	assert.Equal(t, s.write(), nil)
+	assert.Equal(t, nil, s.read())
+	assert.Equal(t, nil, s.write())
 
 	// Test adding a record and reading it.
 	u := new(domain.User)
@@ -31,6 +31,6 @@ func TestMockService(t *testing.T) {
 	u.Password = "Pa$$w0rd"
 	s.AddRecord("user", *u)
 	records, err := s.Records("user")
-	assert.Equal(t, len(records), 1)
-	assert.Equal(t, err, nil)
+	assert.Equal(t, 1, len(records))
+	assert.Equal(t, nil, err)
 }

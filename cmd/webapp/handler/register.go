@@ -32,15 +32,14 @@ func (h *Register) Store(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Build the user from the form values.
-	u := new(domain.User)
-	u.FirstName = r.FormValue("firstname")
-	u.LastName = r.FormValue("lastname")
-	u.Email = r.FormValue("email")
-	u.Password = r.FormValue("password")
+	// Get the values from the form.
+	firstname := r.PostFormValue("firstname")
+	lastname := r.PostFormValue("lastname")
+	email := r.PostFormValue("email")
+	password := r.PostFormValue("password")
 
 	// Add the user to the database.
-	err := h.User.Create(u)
+	err := h.User.Create(firstname, lastname, email, password)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, err)

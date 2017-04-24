@@ -25,7 +25,7 @@ func TestRoutes(t *testing.T) {
 		t.Fatal(err)
 	}
 	h.ServeHTTP(w, r)
-	assert.Equal(t, w.Code, http.StatusOK)
+	assert.Equal(t, http.StatusOK, w.Code)
 
 	// Test a 404.
 	w = httptest.NewRecorder()
@@ -34,7 +34,7 @@ func TestRoutes(t *testing.T) {
 		t.Fatal(err)
 	}
 	h.ServeHTTP(w, r)
-	assert.Equal(t, w.Code, http.StatusNotFound)
+	assert.Equal(t, http.StatusNotFound, w.Code)
 
 	// Test the register page.
 	w = httptest.NewRecorder()
@@ -43,5 +43,5 @@ func TestRoutes(t *testing.T) {
 		t.Fatal(err)
 	}
 	h.ServeHTTP(w, r)
-	assert.Equal(t, w.Code, http.StatusOK)
+	assert.Equal(t, http.StatusOK, w.Code)
 }

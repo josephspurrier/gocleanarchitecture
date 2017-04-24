@@ -31,7 +31,7 @@ func TestLoginIndex(t *testing.T) {
 	h.Index(w, r)
 
 	// Check the output.
-	assert.Equal(t, w.Code, http.StatusOK)
+	assert.Equal(t, http.StatusOK, w.Code)
 }
 
 // TestLoginStoreMissingRequiredField ensures required fields should be entered.
@@ -52,7 +52,7 @@ func TestLoginStoreMissingRequiredFields(t *testing.T) {
 	h.Store(w, r)
 
 	// Check the output.
-	assert.Equal(t, w.Code, http.StatusBadRequest)
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
 
 // TestLoginStoreAuthenticateOK ensures login can be successful.
@@ -64,11 +64,13 @@ func TestLoginStoreAuthenticateOK(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	email := "jdoe@example.com"
+	password := "Pa$$w0rd"
+
 	// Set the request body.
-	val := url.Values{}
-	r.Form = val
-	r.Form.Add("email", "jdoe@example.com")
-	r.Form.Add("password", "Pa$$w0rd")
+	r.PostForm = url.Values{}
+	r.PostForm.Add("email", email)
+	r.PostForm.Add("password", password)
 
 	// Call the handler.
 	h := new(handler.Login)
@@ -78,10 +80,7 @@ func TestLoginStoreAuthenticateOK(t *testing.T) {
 	h.View = view.New("../html", "tmpl")
 
 	// Create a new user.
-	u := new(domain.User)
-	u.Email = "jdoe@example.com"
-	u.Password = "Pa$$w0rd"
-	err = h.User.Create(u)
+	err = h.User.Create("first", "last", email, password)
 	if err != nil {
 		t.Error(err)
 	}
@@ -89,7 +88,7 @@ func TestLoginStoreAuthenticateOK(t *testing.T) {
 	h.Store(w, r)
 
 	// Check the output.
-	assert.Equal(t, w.Code, http.StatusOK)
+	assert.Equal(t, http.StatusOK, w.Code)
 }
 
 // TestLoginStoreAuthenticateFail ensures login can fail.
@@ -101,11 +100,13 @@ func TestLoginStoreAuthenticateFail(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	email := "jdoe2@example.com"
+	password := "Pa$$w0rd"
+
 	// Set the request body.
-	val := url.Values{}
-	r.Form = val
-	r.Form.Add("email", "jdoe2@example.com")
-	r.Form.Add("password", "BadPa$$w0rd")
+	r.Form = url.Values{}
+	r.Form.Add("email", email)
+	r.Form.Add("password", password)
 
 	// Call the handler.
 	h := new(handler.Login)
@@ -115,10 +116,7 @@ func TestLoginStoreAuthenticateFail(t *testing.T) {
 	h.View = view.New("../html", "tmpl")
 
 	// Create a new user.
-	u := new(domain.User)
-	u.Email = "jdoe2@example.com"
-	u.Password = "Pa$$w0rd"
-	err = h.User.Create(u)
+	err = h.User.Create("first", "last", email, password+"bad")
 	if err != nil {
 		t.Error(err)
 	}
@@ -126,5 +124,5 @@ func TestLoginStoreAuthenticateFail(t *testing.T) {
 	h.Store(w, r)
 
 	// Check the output.
-	assert.Equal(t, w.Code, http.StatusUnauthorized)
+	assert.Equal(t, http.StatusUnauthorized, w.Code)
 }
