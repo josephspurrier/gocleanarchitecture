@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/josephspurrier/gocleanarchitecture/adapter"
 	"github.com/josephspurrier/gocleanarchitecture/adapter/jsonrepo"
-	"github.com/josephspurrier/gocleanarchitecture/adapter/passhash"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
 
@@ -29,7 +29,7 @@ func (s *BadHasher) Match(hash, password string) bool {
 func setup() *domain.UserService {
 	return domain.NewUserService(
 		jsonrepo.NewUserRepo(new(jsondb.MockService)),
-		new(passhash.Item))
+		new(adapter.Passhash))
 }
 
 // TestCreateUser ensures user can be created.
@@ -87,7 +87,7 @@ func TestAuthenticate(t *testing.T) {
 func TestUserFailures(t *testing.T) {
 	// Test user creation.
 	db := new(jsondb.MockService)
-	s := domain.NewUserService(jsonrepo.NewUserRepo(db), new(passhash.Item))
+	s := domain.NewUserService(jsonrepo.NewUserRepo(db), new(adapter.Passhash))
 
 	db.WriteFail = true
 	db.ReadFail = true

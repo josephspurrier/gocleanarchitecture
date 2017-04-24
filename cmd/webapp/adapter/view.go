@@ -1,9 +1,6 @@
-package domain
+package adapter
 
 import "net/http"
-
-// ViewVars maps a string key to a variable.
-type ViewVars map[string]interface{}
 
 // IViewService is the interface for HTML templates.
 type IViewService interface {
@@ -16,5 +13,5 @@ type IViewService interface {
 	AddVar(key string, value interface{})
 	DelVar(key string)
 	GetVar(key string) interface{}
-	SetVars(vars ViewVars)
+	SetVars(vars map[string]interface{})
 }

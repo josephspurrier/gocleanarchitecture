@@ -6,8 +6,8 @@ import (
 	"net/url"
 	"testing"
 
+	"github.com/josephspurrier/gocleanarchitecture/adapter"
 	"github.com/josephspurrier/gocleanarchitecture/adapter/jsonrepo"
-	"github.com/josephspurrier/gocleanarchitecture/adapter/passhash"
 	"github.com/josephspurrier/gocleanarchitecture/cmd/webapp/handler"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 	"github.com/josephspurrier/gocleanarchitecture/lib/jsondb"
@@ -47,7 +47,7 @@ func TestLoginStoreMissingRequiredFields(t *testing.T) {
 	h := new(handler.Login)
 	h.User = domain.NewUserService(
 		jsonrepo.NewUserRepo(new(jsondb.MockService)),
-		new(passhash.Item))
+		new(adapter.Passhash))
 	h.View = view.New("../html", "tmpl")
 	h.Store(w, r)
 
@@ -74,7 +74,7 @@ func TestLoginStoreAuthenticateOK(t *testing.T) {
 	h := new(handler.Login)
 	h.User = domain.NewUserService(
 		jsonrepo.NewUserRepo(new(jsondb.MockService)),
-		new(passhash.Item))
+		new(adapter.Passhash))
 	h.View = view.New("../html", "tmpl")
 
 	// Create a new user.
@@ -111,7 +111,7 @@ func TestLoginStoreAuthenticateFail(t *testing.T) {
 	h := new(handler.Login)
 	h.User = domain.NewUserService(
 		jsonrepo.NewUserRepo(new(jsondb.MockService)),
-		new(passhash.Item))
+		new(adapter.Passhash))
 	h.View = view.New("../html", "tmpl")
 
 	// Create a new user.

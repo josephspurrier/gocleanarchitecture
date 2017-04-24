@@ -1,8 +1,6 @@
 package domain
 
-import (
-	"errors"
-)
+import "errors"
 
 var (
 	// ErrPasswordHash is when a password hash creation operation fails.

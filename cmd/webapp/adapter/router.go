@@ -6,7 +6,7 @@ import (
 	"github.com/justinas/alice"
 )
 
-// IRouterService is the interface for routing.
+// IRouterService is the interface for page routing.
 type IRouterService interface {
 	Chain(c ...alice.Constructor) []alice.Constructor
 	ChainHandler(h http.Handler, c ...alice.Constructor) http.Handler

@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/josephspurrier/gocleanarchitecture/cmd/webapp/adapter"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 )
 
 // Login represents the services required for this controller.
 type Login struct {
 	User domain.IUserService
-	View domain.IViewService
+	View adapter.IViewService
 }
 
 // Index displays the logon screen.

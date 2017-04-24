@@ -4,8 +4,6 @@ import (
 	"html/template"
 	"net/http"
 	"path/filepath"
-
-	"github.com/josephspurrier/gocleanarchitecture/domain"
 )
 
 // Item represents a view template.
@@ -15,8 +13,11 @@ type Item struct {
 
 	baseTemplate string
 	template     string
-	vars         domain.ViewVars
+	vars         map[string]interface{}
 }
+
+// ViewVars maps a string key to a variable.
+//type ViewVars map[string]interface{}
 
 // New returns a new template.
 func New(folder string, extension string) *Item {
@@ -27,7 +28,7 @@ func New(folder string, extension string) *Item {
 	v.SetExtension(extension)
 	v.SetBaseTemplate("base")
 	v.SetTemplate("default")
-	v.SetVars(domain.ViewVars{})
+	v.SetVars(map[string]interface{}{})
 
 	return v
 }
@@ -72,7 +73,7 @@ func (v *Item) GetVar(key string) interface{} {
 }
 
 // SetVars sets the template variable map.
-func (v *Item) SetVars(vars domain.ViewVars) {
+func (v *Item) SetVars(vars map[string]interface{}) {
 	v.vars = vars
 }
 

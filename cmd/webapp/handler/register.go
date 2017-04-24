@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/josephspurrier/gocleanarchitecture/cmd/webapp/adapter"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 )
 
 // Register represents the services required for this controller.
 type Register struct {
 	User domain.IUserService
-	View domain.IViewService
+	View adapter.IViewService
 }
 
 // Index displays the register screen.
