@@ -104,9 +104,9 @@ func TestLoginStoreAuthenticateFail(t *testing.T) {
 	password := "Pa$$w0rd"
 
 	// Set the request body.
-	r.Form = url.Values{}
-	r.Form.Add("email", email)
-	r.Form.Add("password", password)
+	r.PostForm = url.Values{}
+	r.PostForm.Add("email", email)
+	r.PostForm.Add("password", password)
 
 	// Call the handler.
 	h := new(handler.Login)

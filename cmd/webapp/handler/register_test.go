@@ -44,12 +44,11 @@ func TestRegisterStoreCreateOK(t *testing.T) {
 	}
 
 	// Set the request body.
-	val := url.Values{}
-	r.Form = val
-	r.Form.Add("firstname", "John")
-	r.Form.Add("lastname", "Doe")
-	r.Form.Add("email", "jdoe@example.com")
-	r.Form.Add("password", "Pa$$w0rd")
+	r.PostForm = url.Values{}
+	r.PostForm.Add("firstname", "John")
+	r.PostForm.Add("lastname", "Doe")
+	r.PostForm.Add("email", "jdoe@example.com")
+	r.PostForm.Add("password", "Pa$$w0rd")
 
 	// Call the handler.
 	h := new(handler.Register)
@@ -100,12 +99,11 @@ func TestRegisterStoreCreateOneMissingFieldFail(t *testing.T) {
 	}
 
 	// Set the request body.
-	val := url.Values{}
-	r.Form = val
-	r.Form.Add("firstname", "John")
+	r.PostForm = url.Values{}
+	r.PostForm.Add("firstname", "John")
 	//r.Form.Add("lastname", "Doe")
-	r.Form.Add("email", "jdoe@example.com")
-	r.Form.Add("password", "Pa$$w0rd")
+	r.PostForm.Add("email", "jdoe@example.com")
+	r.PostForm.Add("password", "Pa$$w0rd")
 
 	// Call the handler.
 	h := new(handler.Register)

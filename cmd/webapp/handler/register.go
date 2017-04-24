@@ -24,7 +24,7 @@ func (h *Register) Index(w http.ResponseWriter, r *http.Request) {
 func (h *Register) Store(w http.ResponseWriter, r *http.Request) {
 	// Don't continue if required fields are missing.
 	for _, v := range []string{"firstname", "lastname", "email", "password"} {
-		if len(r.FormValue(v)) == 0 {
+		if len(r.PostFormValue(v)) == 0 {
 			w.WriteHeader(http.StatusBadRequest)
 			fmt.Fprint(w, `<html>One or more required fields are missing. `+
 				`Click <a href="/register">here</a> to try again.</html>`)
