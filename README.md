@@ -9,9 +9,9 @@ A good example of clean architecture for a web application in Go.
 The **domain** folder is for **enterprise** business logic without any
 dependencies. These can be structs, interfaces, and functions.
 
-There is no **usecase** folder, but if there was, it would hold the
+There is no **usecase** folder, but if there was one, it would hold the
 **application** business logic without any dependencies with the exception of
-the domain logic. These can be structs, interfaces, and functions.
+the domain. These can be structs, interfaces, and functions.
 
 The **adapter** folder should contain abstractions for the packages in the
 **lib** and **vendor** folders.

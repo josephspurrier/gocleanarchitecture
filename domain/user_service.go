@@ -75,7 +75,5 @@ func (s *UserService) Create(firstname, lastname, email,
 	item.Password = passNew
 
 	// Store the user.
-	err = s.repo.Store(item)
-
-	return err
+	return s.repo.Store(item)
 }
