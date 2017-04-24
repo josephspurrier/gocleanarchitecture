@@ -1,18 +1,17 @@
-package boot_test
+package main
 
 import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	"github.com/josephspurrier/gocleanarchitecture/cmd/webapp/boot"
 	"github.com/stretchr/testify/assert"
 )
 
 // TestRoutes ensures each of the routes is set up properly.
 func TestRoutes(t *testing.T) {
 	// Register the services and load the routes.
-	h := boot.ServicesAndRoutes("../html")
+	h := RegisterServices("html").LoadRoutes()
 
 	var err error
 	var w *httptest.ResponseRecorder
