@@ -1,4 +1,4 @@
-package main
+package boot
 
 import (
 	"net/http"
@@ -11,7 +11,7 @@ import (
 // TestRoutes ensures each of the routes is set up properly.
 func TestRoutes(t *testing.T) {
 	// Register the services and load the routes.
-	h := RegisterServices("html").LoadRoutes()
+	h := RegisterServices("../html").LoadRoutes()
 
 	var err error
 	var w *httptest.ResponseRecorder

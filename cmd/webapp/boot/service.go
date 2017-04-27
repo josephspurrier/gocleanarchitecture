@@ -1,4 +1,4 @@
-package main
+package boot
 
 import (
 	"github.com/josephspurrier/gocleanarchitecture/adapter"

@@ -1,10 +1,10 @@
-package main_test
+package boot_test
 
 import (
 	"os"
 	"testing"
 
-	. "github.com/josephspurrier/gocleanarchitecture/cmd/webapp"
+	. "github.com/josephspurrier/gocleanarchitecture/cmd/webapp/boot"
 	"github.com/josephspurrier/gocleanarchitecture/domain"
 
 	"github.com/stretchr/testify/assert"

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/josephspurrier/gocleanarchitecture/cmd/webapp/boot"
 )
 
 // main is the entrypoint for the application.
@@ -12,7 +14,7 @@ func main() {
 	port := 8080
 
 	// Register the services and load the routes.
-	http.Handle("/", RegisterServices("html").LoadRoutes())
+	http.Handle("/", boot.RegisterServices("html").LoadRoutes())
 
 	// Display message on the server.
 	log.Printf("webapp started on port %v\n", port)
